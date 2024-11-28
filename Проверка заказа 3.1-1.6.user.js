@@ -15,8 +15,8 @@
   // Переменная для хранения начального значения даты
     let initialDateReadyValue = null;
     let checkButtonClicked = false; // Переменная для отслеживания нажатия кнопки "Проверить"
-    
-    
+
+
     // Функция для проверки текста "Номенклатура" и получения значения "DateReady"
     function checkForTextAndDate() {
         const searchText = "Номенклатура";
@@ -42,7 +42,7 @@
             }
         }
     }
-    
+
 
     // Создание кнопки для проверки заказа
     const orderCheckButton = document.createElement('button');
@@ -87,12 +87,12 @@
     });
 
     let ordersArray = [];
-  
-    
-    
-    
-    
-    
+
+
+
+
+
+
 
 
     // Обработчик клика для кнопки проверки заказа
@@ -108,7 +108,7 @@
                 // Проверка наличия атрибута id у дочернего элемента
                 if (children[i].id) {
                     ordersArray.push(children[i].id);
-                    
+
                 }
             }
     }
@@ -143,19 +143,19 @@
                             productZKValue = productZKList[productZKtr].querySelector('#Quantity').value;
                      console.log(productZKValue);
                         }
-                        
+
                      if (productZKValue == 1) {
                         let sms2 = productZKList[i].children[0];
                         console.log(sms2);
-                        
+
                         sms2.style.color = 'red'
                        messages.push(`В операции "${sms2.innerText}", Количество не должно быть 1, или подойдите к Щёкину Александру`);
                        productZKValue = 0;
-                   }  
+                   }
                     }
-                    
+
                     }
-       
+
        for (let i = 0; i < ordersArray.length; i++){
         const orderElem = document.getElementById(ordersArray[i])
                     console.log(orderElem);
@@ -173,13 +173,13 @@
                     let konturRezka = false;
                     let kashirSam = false;
                     let lamSoft = false;
-                    
-    
-    
+
+
+
                     for (let row of rows) {
                         let cells = row.getElementsByTagName('td');
                         let name = cells[0] ? cells[0].innerText : '';
-    
+
                         foundSkvoznaya = foundSkvoznaya || name.includes('СКВОЗНАЯ');
                         foundOlod = foundOlod || name.includes('олод');
                         foundLicoMgi = foundLicoMgi || name.includes('ЛИЦО МГИ');
@@ -192,21 +192,21 @@
                         lamPlot = lamPlot || name.includes('минация');
                         kashirSam = kashirSam || name.includes('ашировка');
                         lamSoft = lamSoft || name.includes('софттач');
-    
+
                     }
-    
+
                     // Проверка условий 3 мм сквозная
                     let trimSize = null;
-                    
+
                     trimSize = orderElem.querySelector('#TrimSize') ? parseInt(orderElem.querySelector('#TrimSize').value) : null;
-                    
-                    
-                    
-                    
+
+
+
+
                     const tirazh = orderElem.querySelector('#Tirazh') ? parseInt(orderElem.querySelector('#Tirazh').value) : 0;
-            
-                    
-            
+
+
+
                       if (tirazh === 0) {
                         messages.push(`Укажите количество в тираже в ${getOrderName(i)}!`);
                     }
@@ -215,8 +215,8 @@
                             messages.push(`На сквозную резку в ${getOrderName(i)} вылет ставим 3мм!`);
                         }
                     }
-    
-                
+
+
                     // Проверка условий для карточек и ламинации
                     const cifraLayoutType = document.getElementById('CifraLayoutType');
                     if (foundOlod && cifraLayoutType && cifraLayoutType.value !== '2') {
@@ -241,7 +241,7 @@
                             messages.push(`Двухстороняя ламинация недоступна при термопереплете в ${getOrderName(i)}! Выберите одностороннюю!`);
                         }
                     }
-                    // Проверка на операции ZK 
+                    // Проверка на операции ZK
                     let postpressList = orderElem.querySelector('#PostpressList');
                     let ZKList = postpressList.getElementsByTagName('tr')
                     let ZKtr = null;
@@ -262,21 +262,21 @@
                    }
                         }
                     }
-                     
+
                     }
-                    
 
 
 
 
-                   
-                    
 
-                    
-                    
 
-                    
-    
+
+
+
+
+
+
+
                     // Проверка связки ламинация+контурная резка
                     if (lamPlot) {
                         const konturRezka = orderElem.innerText.includes('резка наклеек ПРОСТАЯ - ПОЛИГРАФИЯ');
@@ -284,13 +284,13 @@
                             messages.push(`Контурная резка с ламинацией в ${getOrderName(i)}! Выберите операцию "Плоттерная (контурная) резка ламинированных наклеек ПРОСТАЯ - ПОЛИГРАФИЯ"!`);
                         }
                     }
-    
+
                     // Проверка на использование бумаги с надсечками
                     if (foundLicoMgi1) {
                         const paperType = orderElem.querySelector('#PaperType_chosen .chosen-single span');
                         if (paperType && paperType.innerText.includes("с надсечками")) {
                             messages.push(`На MGI используется бумага БЕЗ надсечек в ${getOrderName(i)}!`);
-    
+
                         }
                     }
                     // Проверка на надсечку с кашировкой
@@ -298,7 +298,7 @@
                         const paperType = orderElem.querySelector('#PaperType_chosen .chosen-single span');
                         if (paperType && paperType.innerText.includes("с надсечками")) {
                             messages.push(`Для кашировки используется бумага без надсечки в ${getOrderName(i)}!`);
-    
+
                         }
                     }
                     //  Проверка условий 0 мм
@@ -309,14 +309,14 @@
                     }else if (paperType1 && (paperType1.innerText.includes("СНЕГУРОЧКА") && !useMargins.checked)){
                         messages.push(`в ${getOrderName(i)} Необходимо поставить галочку напротив "Использовать поля (цифр. печ.)"!`);
                     }
-                    
+
                     // Проверка на снегурку и нулевой вылет
                     // const trimSizeAll = document.querySelectorAll('#TrimSize');
-                    
+
                     // console.log(trimSizeAll);
                     // trimSizeAll.forEach((e)=>{
                     //     console.log(e.value);
-                        
+
                     // })
                     // const paperType1 = document.querySelector('#PaperType_chosen .chosen-single span');
                     //     if (paperType1 && paperType1.innerText.includes("СНЕГУРОЧКА") && trimSize !== 0) {
@@ -329,10 +329,10 @@
                           //  messages.push(`Убедитесь в правильности расчёта длины прижины!`);
                        // }
                    // }
-                
-            
-        
-                }  
+
+
+
+                }
         // Вывод сообщений
         if (messages.length === 0) {
             messages.push('Всё в порядке!');
@@ -346,10 +346,10 @@
         }
 
         showMessages(messages);
-       
 
-              
-    }); 
+
+
+    });
 let count = 0;
 let userName1 = document.querySelector('body > ul > div > li:nth-child(1) > a.topmenu-a').textContent;
 console.log(userName1);
@@ -459,17 +459,17 @@ document.addEventListener('keydown', function(event) {
             initialDateReadyValue = null;
         });
     }
-    
-    
+
+
     // Функция для проверки наличия текста на странице каждые 1 секунду
     function checkForText() {
         const searchText = 'Лак для офсета';
         const pageContent = document.body.innerText;
         // Создаем цикл проверки по ордерам
-        
-            
-        
-        
+
+
+
+
 
 
         if (pageContent.includes(searchText)) {
