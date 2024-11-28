@@ -11,12 +11,12 @@
 
 (function() {
     'use strict';
-
+// 
   // Переменная для хранения начального значения даты
     let initialDateReadyValue = null;
     let checkButtonClicked = false; // Переменная для отслеживания нажатия кнопки "Проверить"
 
-
+// всекм привет
     // Функция для проверки текста "Номенклатура" и получения значения "DateReady"
     function checkForTextAndDate() {
         const searchText = "Номенклатура";
