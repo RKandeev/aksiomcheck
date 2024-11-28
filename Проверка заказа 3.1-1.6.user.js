@@ -90,8 +90,14 @@
 
 
 
-
-
+    
+    const new4Style = document.createElement('style');
+            new4Style.type = "text/css"
+            let new4Styles = `#Doc > div > table:nth-child(6) > tbody > tr > td:nth-child(1) > button.btn.btn-default.btn-lg {
+            margin-left: 500px;
+            }`;
+            new4Style.appendChild(document.createTextNode(new4Styles));
+            document.head.appendChild(new4Style);
 
 
 
