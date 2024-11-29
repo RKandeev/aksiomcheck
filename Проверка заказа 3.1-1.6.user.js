@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Проверка заказа 4.0
+// @name         Проверка заказа 4.1
 // @namespace    http://tampermonkey.net/
 // @version      1.6
 // @description
@@ -40,8 +40,8 @@
                     initialDateReadyValue = null; // Сбрасываем начальное значение, если поле пустое
                 }
             }
-        }
-    }
+        }
+    }
 
 
     // Создание кнопки для проверки заказа
@@ -162,44 +162,50 @@
 
                     }
 
-       for (let i = 0; i < ordersArray.length; i++){
-        const orderElem = document.getElementById(ordersArray[i])
-                    console.log(orderElem);
-                    let rows = orderElem.getElementsByTagName('tr');
-                    let foundSkvoznaya = false;
-                    let foundOlod = false;
-                    let foundLicoMgi = false;
-                    let foundLicoMgi1 = false;
-                    let foundLicoMgi2 = false;
-                    let foundOborotMgi1 = false;
-                    let found1Plus1 = false;
-                    let foundPerf = false;
-                    let foundZk = false;
-                    let lamPlot = false;
-                    let konturRezka = false;
-                    let kashirSam = false;
-                    let lamSoft = false;
-
-
-
-                    for (let row of rows) {
-                        let cells = row.getElementsByTagName('td');
-                        let name = cells[0] ? cells[0].innerText : '';
-
-                        foundSkvoznaya = foundSkvoznaya || name.includes('СКВОЗНАЯ');
-                        foundOlod = foundOlod || name.includes('олод');
-                        foundLicoMgi = foundLicoMgi || name.includes('ЛИЦО МГИ');
-                        foundLicoMgi1 = foundLicoMgi1 || name.includes('ЦО МГИ1 Ла');
-                        foundLicoMgi2 = foundLicoMgi2 || name.includes('ЦО МГИ1 Фо');
-                        foundOborotMgi1 = foundOborotMgi1 || name.includes('ОБОРОТ МГИ1');
-                        found1Plus1 = found1Plus1 || name.includes('(1+1)');
-                        foundPerf = foundPerf || name.includes('ерфорация');
-                        foundZk = foundZk || name.includes('zk');
-                        lamPlot = lamPlot || name.includes('минация');
-                        kashirSam = kashirSam || name.includes('ашировка');
-                        lamSoft = lamSoft || name.includes('софттач');
-
-                    }
+                    for (let i = 0; i < ordersArray.length; i++){
+                        const orderElem = document.getElementById(ordersArray[i])
+                                    console.log(orderElem);
+                                    let rows = orderElem.getElementsByTagName('tr');
+                                    let foundSkvoznaya = false;
+                                    let foundOlod = false;
+                                    let foundLicoMgi = false;
+                                    let foundLicoMgi1 = false;
+                                    let foundLicoMgi2 = false;
+                                    let foundOborotMgi1 = false;
+                                    let found1Plus1 = false;
+                                    let foundPerf = false;
+                                    let foundZk = false;
+                                    let lamPlot = false;
+                                    let kontRezka = false;
+                                    let kashirSam = false;
+                                    let lamSoft = false;
+                                    let vyrTigel = false;
+                                    let plotLam = false;
+                                    let folgRegular = false;
+                
+                
+                
+                                    for (let row of rows) {
+                                        let cells = row.getElementsByTagName('td');
+                                        let name = cells[0] ? cells[0].innerText : '';
+                
+                                        foundSkvoznaya = foundSkvoznaya || name.includes('СКВОЗНАЯ');
+                                        foundOlod = foundOlod || name.includes('олод');
+                                        foundLicoMgi = foundLicoMgi || name.includes('ЛИЦО МГИ');
+                                        foundLicoMgi1 = foundLicoMgi1 || name.includes('ЦО МГИ1 Ла');
+                                        foundLicoMgi2 = foundLicoMgi2 || name.includes('ЦО МГИ1 Фо');
+                                        foundOborotMgi1 = foundOborotMgi1 || name.includes('ОБОРОТ МГИ1');
+                                        found1Plus1 = found1Plus1 || name.includes('(1+1)');
+                                        foundPerf = foundPerf || name.includes('ерфорация');
+                                        foundZk = foundZk || name.includes('zk');
+                                        lamPlot = lamPlot || name.includes('минация');
+                                        kashirSam = kashirSam || name.includes('ашировка');
+                                        lamSoft = lamSoft || name.includes('софттач');
+                                        vyrTigel = vyrTigel || name.includes('тигеле');
+                                        plotLam = plotLam || name.includes('пакетная');
+                                        kontRezka = kontRezka || name.includes('онтурная');
+                                        folgRegular = folgRegular || name.includes('ольгирование');
+                                    }
 
                     // Проверка условий 3 мм сквозная
                     let trimSize = null;
@@ -230,7 +236,7 @@
                     }
                     // Проверка софттач+мги
                     if (foundLicoMgi && !lamSoft) {
-                        messages.push(`Вы забыли софттач ламинацию для МГИ в ${getOrderName(i)}!`);
+                        messages.push(`Вы забыли софттач ламинацию для МГИ в ${getOrderName(i)}! Если Вы действительно собираетесь делать без ламинации - обратитесь к Александру Щ.`);
                     }
                     // Проверка на ЛИЦО МГИ1+ЛИЦО МГИ1
                     if (foundLicoMgi1 && foundLicoMgi2) {
@@ -247,6 +253,28 @@
                             messages.push(`Двухстороняя ламинация недоступна при термопереплете в ${getOrderName(i)}! Выберите одностороннюю!`);
                         }
                     }
+
+                    // Проверка связки тигель + отверстие
+                    if (vyrTigel) {
+                        const sverlOtverst = orderElem.innerText.includes('Отверстие');
+                        if (sverlOtverst) {
+                            messages.push(`Сверление отверстий после вырубки в ${getOrderName(i)} невозможно после вырубки на тигеле! Если сверление отверстий необходимо и возможно - обратитесь за помощью к Александру Щ.`);
+                        }
+                    }
+
+                    // Проверка связки пакетная ламинация + биговка
+                    if (plotLam) {
+                        const bigovka = orderElem.innerText.includes('Биговка');
+                        if (bigovka) {
+                            messages.push(`Биговку в ${getOrderName(i)} можно выполнить только по тонкой ламинации!`);
+                        }
+                    }
+
+                    // Проверка связки фольгирование + софттач
+                    if (folgRegular && !lamSoft) {
+                        messages.push(`В ${getOrderName(i)} делается фольгирование. Оно ложится только на софттач ламинацию!`);
+                        }
+                    
                     // Проверка на операции ZK
                     let postpressList = orderElem.querySelector('#PostpressList');
                     let ZKList = postpressList.getElementsByTagName('tr')
@@ -270,18 +298,6 @@
                     }
 
                     }
-
-
-
-
-
-
-
-
-
-
-
-
 
                     // Проверка связки ламинация+контурная резка
                     if (lamPlot) {
@@ -307,6 +323,24 @@
 
                         }
                     }
+
+                    // Проверка на надсечку с контурной резкй
+                    if (kontRezka) {
+                        const paperType = orderElem.querySelector('#PaperType_chosen .chosen-single span');
+                        if (paperType && paperType.innerText.includes("с надсечками")) {
+                            messages.push(`Для контурной резки бумага без надсечки в ${getOrderName(i)}!`);
+
+                        }
+                    }
+                    // Проверка на контурную резку и материал
+                        if (kontRezka) {
+                        const paperType = orderElem.querySelector('#PaperType_chosen .chosen-single span');
+                        if (paperType && !paperType.innerText.includes("амоклей")) {
+                            messages.push(`В ${getOrderName(i)} используется неподходящий материал для контурной резки! Укажите сквозную резку!`);
+
+                        }
+                    }   
+                    
                     //  Проверка условий 0 мм
                     let useMargins = orderElem.querySelector('#UseMargins');
                     const paperType1 = orderElem.querySelector('#PaperType_chosen .chosen-single span');
@@ -316,28 +350,7 @@
                         messages.push(`в ${getOrderName(i)} Необходимо поставить галочку напротив "Использовать поля (цифр. печ.)"!`);
                     }
 
-                    // Проверка на снегурку и нулевой вылет
-                    // const trimSizeAll = document.querySelectorAll('#TrimSize');
-
-                    // console.log(trimSizeAll);
-                    // trimSizeAll.forEach((e)=>{
-                    //     console.log(e.value);
-
-                    // })
-                    // const paperType1 = document.querySelector('#PaperType_chosen .chosen-single span');
-                    //     if (paperType1 && paperType1.innerText.includes("СНЕГУРОЧКА") && trimSize !== 0) {
-                    //         messages.push(`В ${getOrderName(i)} указана офстека в пачках! Не забудьте указать вылет ноль и указать галку "использовать поля цифровой печати"!`);
-                    //     }
-                    // Проверка на пружину и перфорацию (переделать)
-                    //if (foundPerf) {
-                      //  const pruzhina = document.body.innerText.includes('Металлическая пружина ');
-                       // if (pruzhina) {
-                          //  messages.push(`Убедитесь в правильности расчёта длины прижины!`);
-                       // }
-                   // }
-
-
-
+                   
                 }
         // Вывод сообщений
         if (messages.length === 0) {
