@@ -18,30 +18,67 @@
 
 // всекм привет
     // Функция для проверки текста "Номенклатура" и получения значения "DateReady"
+    
     function checkForTextAndDate() {
         const searchText = "Номенклатура";
         const bodyText = document.body.innerText;
 
         if (bodyText.includes(searchText)) {
-            const dateReadyInput = document.querySelector('input#DateReady.center.datepicker.DateReady.hasDatepicker');
+            // const dateReadyInput = document.querySelector('input#DateReady.center.datepicker.DateReady.hasDatepicker');
 
-            if (dateReadyInput) {
-                const dateReadyValue = dateReadyInput.value;
+            // if (dateReadyInput) {
+            //     const dateReadyValue = dateReadyInput.value;
 
-                // Устанавливаем начальное значение только если есть валидные данные
-                if (dateReadyValue) {
-                    if (initialDateReadyValue === null) {
-                        initialDateReadyValue = dateReadyValue;  // Сохраняем текущее значение
-                    } else if (initialDateReadyValue !== dateReadyValue) {
-                        showCenterMessage('Дата сдачи заказа изменилась!'); // Показываем сообщение в центре экрана
-                        initialDateReadyValue = dateReadyValue; // Обновляем значение
-                    }
-                } else {
-                    initialDateReadyValue = null; // Сбрасываем начальное значение, если поле пустое
-                }
-            }
+            //     // Устанавливаем начальное значение только если есть валидные данные
+            //     if (dateReadyValue) {
+            //         if (initialDateReadyValue === null) {
+            //             initialDateReadyValue = dateReadyValue;  // Сохраняем текущее значение
+            //         } else if (initialDateReadyValue !== dateReadyValue) {
+            //             showCenterMessage('Дата сдачи заказа изменилась!'); // Показываем сообщение в центре экрана
+            //             initialDateReadyValue = dateReadyValue; // Обновляем значение
+            //         }
+            //     } else {
+            //         initialDateReadyValue = null; // Сбрасываем начальное значение, если поле пустое
+            //     }
+            // }
+            const input = document.getElementById('DateReady');
+    let previousValue = input.value;
+    
+    
+
+    // Проверка каждую секунду
+    if (dateReadyInput) {
+    setInterval(() => {
+    let currentValue = input.value;
+    if (currentValue !== previousValue) {
+        
+            showCenterMessage('Дата сдачи заказа изменилась!'); // Показываем сообщение в центре экрана
+            console.log(currentValue);
+            
+        previousValue = currentValue;
+        
+        
+    }
+}, 1000);}
+
+// Дополнительно следим за изменениями через MutationObserver
+// const observer = new MutationObserver((mutations) => {
+//     mutations.forEach((mutation) => {
+//         if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
+//             let currentValue = input.value;
+//             if (currentValue !== previousValue) {
+//                 showCenterMessage('Дата сдачи заказа изменилась!'); // Показываем сообщение в центре экрана
+//                 previousValue = currentValue;
+//             }
+//         }
+//     });
+// });
+
+// observer.observe(input, { attributes: true });
         }
     }
+    
+
 
 
     // Создание кнопки для проверки заказа
