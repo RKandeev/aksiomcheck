@@ -24,7 +24,7 @@
         const bodyText = document.body.innerText;
 
         if (bodyText.includes(searchText)) {
-            // const dateReadyInput = document.querySelector('input#DateReady.center.datepicker.DateReady.hasDatepicker');
+            
 
             // if (dateReadyInput) {
             //     const dateReadyValue = dateReadyInput.value;
@@ -43,23 +43,33 @@
             // }
             const input = document.getElementById('DateReady');
     let previousValue = input.value;
+    let changeDate = false;
     
-    
-
+const dateReadyInput = document.querySelector('input#DateReady.center.datepicker.DateReady.hasDatepicker');
     // Проверка каждую секунду
     if (dateReadyInput) {
+        let currentValue = null
     setInterval(() => {
-    let currentValue = input.value;
+    currentValue = input.value;
     if (currentValue !== previousValue) {
         
-            showCenterMessage('Дата сдачи заказа изменилась!'); // Показываем сообщение в центре экрана
-            console.log(currentValue);
+            changeDate = true;
+            console.log(changeDate);
             
         previousValue = currentValue;
         
         
     }
-}, 1000);}
+    if (changeDate == true){
+        showCenterMessage('Дата сдачи заказа изменилась!'); // Показываем сообщение в центре экрана
+        changeDate = false;
+    } else {
+        changeDate = false;
+    }
+    
+},1000);
+}
+
 
 // Дополнительно следим за изменениями через MutationObserver
 // const observer = new MutationObserver((mutations) => {
@@ -443,8 +453,10 @@ document.addEventListener('keydown', function(event) {
 
 
     // Функция для отображения сообщения о смене даты
+    
     function showCenterMessage(message) {
         const blurOverlay = document.createElement('div');
+        blurOverlay.id = "blueOverlay"
         blurOverlay.style.position = 'fixed';
         blurOverlay.style.top = '0';
         blurOverlay.style.left = '0';
@@ -453,9 +465,9 @@ document.addEventListener('keydown', function(event) {
         blurOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
         blurOverlay.style.backdropFilter = 'blur(5px)';
         blurOverlay.style.zIndex = '9998';
-        document.body.appendChild(blurOverlay);
 
         const messageContainer = document.createElement('div');
+        messageContainer.id = "messageContainer"
         messageContainer.style.position = 'fixed';
         messageContainer.style.top = '50%';
         messageContainer.style.left = '50%';
@@ -466,16 +478,23 @@ document.addEventListener('keydown', function(event) {
         messageContainer.style.zIndex = '10000';
         messageContainer.style.borderRadius = '10px';
 
-        let messageHTML = '<b>' + message + '</b><br><br>';
-        messageHTML += '<button id="closeMessage" style="width: 80px; height: 30px; margin: 0 auto; display: block; background: linear-gradient(to bottom, #5BB75B, #429742); border: none; color: white; cursor: pointer; border-radius: 5px;">Ок</button>';
+  
+        
+        let message1 = document.getElementById("messageContainer")
+        if (!message1){
+            document.body.appendChild(blurOverlay);
+            let messageHTML = '<b>' + message + '</b><br><br>';
+            messageHTML += '<button id="closeMessage" style="width: 80px; height: 30px; margin: 0 auto; display: block; background: linear-gradient(to bottom, #5BB75B, #429742); border: none; color: white; cursor: pointer; border-radius: 5px;">Ок</button>';
+    
+            messageContainer.innerHTML = messageHTML;
+            document.body.appendChild(messageContainer);
+            document.getElementById('closeMessage').addEventListener('click', function() {
+                document.body.removeChild(messageContainer);
+                document.body.removeChild(blurOverlay);
+            });
+        }
 
-        messageContainer.innerHTML = messageHTML;
-        document.body.appendChild(messageContainer);
-
-        document.getElementById('closeMessage').addEventListener('click', function() {
-            document.body.removeChild(messageContainer);
-            document.body.removeChild(blurOverlay);
-        });
+       
     }
 
     // Функция для отображения сообщений
