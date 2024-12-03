@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Проверка заказа 4.1
+// @name         Проверка заказа 5.0
 // @namespace    http://tampermonkey.net/
 // @version      1.6
 // @description
@@ -15,9 +15,68 @@
   // Переменная для хранения начального значения даты
     let initialDateReadyValue = null;
     let checkButtonClicked = false; // Переменная для отслеживания нажатия кнопки "Проверить"
-
+    let choosenCalcId = '';
+    let closeBtnId = '';
 // всекм привет
     // Функция для проверки текста "Номенклатура" и получения значения "DateReady"
+
+    let choosenCalcParent = null;
+    setInterval(()=>{
+        choosenCalcParent =  document.querySelector('#Doc > div.TemplateChooser')
+        
+   
+    if (choosenCalcParent){
+        
+        
+        console.log(choosenCalcParent); 
+    let choosenCalc = null;
+    
+    for (let i = 0; i < 9; i++) {
+        choosenCalcParent.children[i].addEventListener("click", function() {
+            choosenCalc = null;
+            choosenCalcId = null;
+            closeBtnId = null;
+          // Получаем индекс элемента, на который нажали
+          choosenCalc = parseInt(i);
+          
+      
+          // Выводим индекс в консоль
+         console.log(choosenCalc);
+              
+            if (choosenCalc === 0){
+                closeBtnId = '#Doc > div > table:nth-child(6) > tbody > tr > td:nth-child(1) > button.btn.btn-default.btn-lg'              
+                choosenCalcId = '#Doc > div > table:nth-child(6) > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg';
+          } else if(choosenCalc === 1 || choosenCalc === 7){
+                choosenCalcId = '#Doc > div > table:nth-child(9) > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg';
+                closeBtnId = '#Doc > div > table:nth-child(9) > tbody > tr > td:nth-child(1) > button.btn.btn-default.btn-lg'
+          } else if(choosenCalc === 2 || choosenCalc === 3){
+                closeBtnId = '#Doc > div > table:nth-child(7) > tbody > tr > td:nth-child(1) > button.btn.btn-default.btn-lg'
+                choosenCalcId = '#Doc > div > table:nth-child(7) > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg';
+          } else if(choosenCalc === 4 || choosenCalc === 6){
+                closeBtnId = '#Doc > table > tbody > tr > td:nth-child(1) > button.btn.btn-default.btn-lg'
+                choosenCalcId = '#Doc > table > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg';
+          } else if(choosenCalc === 5){
+                closeBtnId = '#Doc > div > table:nth-child(7) > tbody > tr > td:nth-child(1) > button.btn.btn-default.btn-lg'
+                choosenCalcId = '#Doc > div > table:nth-child(7) > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg';
+          } else if(choosenCalc === 8){
+                closeBtnId= '#Doc > div > table:nth-child(11) > tbody > tr > td:nth-child(1) > button.btn.btn-default.btn-lg'
+                choosenCalcId = '#Doc > div > table:nth-child(11) > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg';
+          }
+      
+          
+            
+        });
+      }
+      
+    }
+    const new4Style = document.createElement('style');
+          new4Style.type = "text/css"
+          let new4Styles = `${closeBtnId} {margin-left: 500px;}`;
+          new4Style.appendChild(document.createTextNode(new4Styles));
+          document.head.appendChild(new4Style);
+},1000)
+  
+    
     
     function checkForTextAndDate() {
         const searchText = "Номенклатура";
@@ -69,26 +128,10 @@ const dateReadyInput = document.querySelector('input#DateReady.center.datepicker
     
 },1000);
 }
-
-
-// Дополнительно следим за изменениями через MutationObserver
-// const observer = new MutationObserver((mutations) => {
-//     mutations.forEach((mutation) => {
-//         if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
-//             let currentValue = input.value;
-//             if (currentValue !== previousValue) {
-//                 showCenterMessage('Дата сдачи заказа изменилась!'); // Показываем сообщение в центре экрана
-//                 previousValue = currentValue;
-//             }
-//         }
-//     });
-// });
-
-// observer.observe(input, { attributes: true });
         }
     }
     
-
+    
 
 
     // Создание кнопки для проверки заказа
@@ -138,13 +181,7 @@ const dateReadyInput = document.querySelector('input#DateReady.center.datepicker
 
 
     
-    const new4Style = document.createElement('style');
-            new4Style.type = "text/css"
-            let new4Styles = `#Doc > div > table:nth-child(6) > tbody > tr > td:nth-child(1) > button.btn.btn-default.btn-lg {
-            margin-left: 500px;
-            }`;
-            new4Style.appendChild(document.createTextNode(new4Styles));
-            document.head.appendChild(new4Style);
+    
 
 
 
@@ -407,7 +444,11 @@ const dateReadyInput = document.querySelector('input#DateReady.center.datepicker
             // let new2Styles = `#Doc > div > table:nth-child(6) > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg {display: inline-block}`;
             // new2Style.appendChild(document.createTextNode(new2Styles));
             // document.head.appendChild(new2Style);
-            let calcButton = document.querySelector('#Doc > div > table:nth-child(6) > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg')
+            console.log(choosenCalcId);
+            
+            let calcButton = document.querySelector(choosenCalcId)
+            console.log(calcButton);
+            
             calcButton.click();
         }
 
@@ -433,7 +474,7 @@ document.addEventListener('keydown', function(event) {
         if (userName1 === user1 || userName1 === user2 || userName1 === user3 || userName1 === user4){
             const new2Style = document.createElement('style');
             new2Style.type = "text/css"
-            let new2Styles = `#Doc > div > table:nth-child(6) > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg {display: inline-block}`;
+            let new2Styles = `${choosenCalcId} {display: inline-block!important}`;
             new2Style.appendChild(document.createTextNode(new2Styles));
             document.head.appendChild(new2Style);
             count =0;
@@ -539,7 +580,8 @@ document.addEventListener('keydown', function(event) {
     // Функция для проверки наличия текста на странице каждые 1 секунду
     function checkForText() {
         const searchText = 'Лак для офсета';
-        const searchText2 = 'Видов:';
+        const searchText2 = 'Тираж:';
+        const searchText3 = 'Размер';
         const pageContent = document.body.innerText;
         // Создаем цикл проверки по ордерам
 
@@ -548,17 +590,16 @@ document.addEventListener('keydown', function(event) {
 
 
 
-        if (pageContent.includes(searchText) && pageContent.includes(searchText2)) {
+        if (pageContent.includes(searchText) && pageContent.includes(searchText2)&& pageContent.includes(searchText3)) {
             orderCheckButton.style.display = 'block'; // Показываем кнопку
             const new3Style = document.createElement('style');
             new3Style.type = "text/css"
-            let new3Styles = `#Doc > div > table:nth-child(6) > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg {display: none}`;
+            let new3Styles = `${choosenCalcId} {display: none}`;
             new3Style.appendChild(document.createTextNode(new3Styles));
             document.head.appendChild(new3Style);
         } else {
             orderCheckButton.style.display = 'none'; // Скрываем кнопку
             
-
         }
     }
 
