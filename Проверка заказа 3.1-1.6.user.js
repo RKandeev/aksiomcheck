@@ -193,7 +193,7 @@
     let messages = [];
 
     if (choosenCalc === 0 || choosenCalc === 2){
-let prevArray = [];
+    let prevArray = [];
     const currentArray = JSON.stringify(ordersArray);
     if (currentArray !== prevArray) {
       ordersArray = [];
@@ -514,8 +514,12 @@ let prevArray = [];
       }
     }
     } else if (choosenCalc === 1){
-        alert('а тут нет проверок нифига пока');
         
+        let Tirazh = document.getElementById("Tirazh");
+        if (Tirazh.value == 0){
+            messages.push("Укажите тираж");
+            Tirazh.style.color = 'red';
+        }
     }
 
     
