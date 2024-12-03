@@ -21,6 +21,7 @@
     // Функция для проверки текста "Номенклатура" и получения значения "DateReady"
 
     let choosenCalcParent = null;
+    let choosenCalc = null;
     setInterval(()=>{
         choosenCalcParent =  document.querySelector('#Doc > div.TemplateChooser')
         
@@ -28,8 +29,8 @@
     if (choosenCalcParent){
         
         
-        console.log(choosenCalcParent); 
-    let choosenCalc = null;
+        
+    
     
     for (let i = 0; i < 9; i++) {
         choosenCalcParent.children[i].addEventListener("click", function() {
@@ -41,42 +42,53 @@
           
       
           // Выводим индекс в консоль
-         console.log(choosenCalc);
               
             if (choosenCalc === 0){
                 closeBtnId = '#Doc > div > table:nth-child(6) > tbody > tr > td:nth-child(1) > button.btn.btn-default.btn-lg'              
                 choosenCalcId = '#Doc > div > table:nth-child(6) > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg';
-          } else if(choosenCalc === 1 || choosenCalc === 7){
+          } else if(choosenCalc === 1){
                 choosenCalcId = '#Doc > div > table:nth-child(9) > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg';
                 closeBtnId = '#Doc > div > table:nth-child(9) > tbody > tr > td:nth-child(1) > button.btn.btn-default.btn-lg'
-          } else if(choosenCalc === 2 || choosenCalc === 3){
+          } else if(choosenCalc === 2){
                 closeBtnId = '#Doc > div > table:nth-child(7) > tbody > tr > td:nth-child(1) > button.btn.btn-default.btn-lg'
                 choosenCalcId = '#Doc > div > table:nth-child(7) > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg';
-          } else if(choosenCalc === 4 || choosenCalc === 6){
-                closeBtnId = '#Doc > table > tbody > tr > td:nth-child(1) > button.btn.btn-default.btn-lg'
-                choosenCalcId = '#Doc > table > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg';
-          } else if(choosenCalc === 5){
-                closeBtnId = '#Doc > div > table:nth-child(7) > tbody > tr > td:nth-child(1) > button.btn.btn-default.btn-lg'
-                choosenCalcId = '#Doc > div > table:nth-child(7) > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg';
-          } else if(choosenCalc === 8){
-                closeBtnId= '#Doc > div > table:nth-child(11) > tbody > tr > td:nth-child(1) > button.btn.btn-default.btn-lg'
-                choosenCalcId = '#Doc > div > table:nth-child(11) > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg';
-          }
-      
+          } else if(choosenCalc === 3  || choosenCalc === 4 || choosenCalc === 5 || choosenCalc === 6 || choosenCalc === 8){
+                closeBtnId = null
+                choosenCalcId = null;
+          } else if (choosenCalc === 7){
+            closeBtnId = null
+            choosenCalcId = null;
+            
+        }
+      setTimeout(()=>{
+                
+              document.querySelector(`#CheckAllTech > div:nth-child(1) > label > input[type=checkbox]`).checked = false;
+              document.querySelector(`#CheckAllTech > div:nth-child(2) > label > input[type=checkbox]`).checked = false;
+              document.querySelector(`#CheckAllTech > div:nth-child(3) > label > input[type=checkbox]`).checked = false;
+              document.querySelector(`#CheckAllTech > div:nth-child(4) > label > input[type=checkbox]`).checked = false;
+              document.querySelector(`#CheckAllTech > div:nth-child(5) > label > input[type=checkbox]`).checked = false;
+              document.querySelector(`#CheckAllTech > div:nth-child(12) > label > input[type=checkbox]`).checked = true;
+              
+                
+            },500);
           
             
         });
+        
       }
       
     }
+    
+    
     const new4Style = document.createElement('style');
           new4Style.type = "text/css"
           let new4Styles = `${closeBtnId} {margin-left: 500px;}`;
           new4Style.appendChild(document.createTextNode(new4Styles));
           document.head.appendChild(new4Style);
-},1000)
+},100)
+
   
-    
+
     
     function checkForTextAndDate() {
         const searchText = "Номенклатура";
@@ -428,10 +440,14 @@ const dateReadyInput = document.querySelector('input#DateReady.center.datepicker
                     //  Проверка условий 0 мм
                     let useMargins = orderElem.querySelector('#UseMargins');
                     const paperType1 = orderElem.querySelector('#PaperType_chosen .chosen-single span');
-                    if (paperType1 && (paperType1.innerText.includes("СНЕГУРОЧКА") && trimSize !== 0) ){
+                    if (paperType1 && (paperType1.innerText.includes("СНЕГУРОЧКА") && trimSize !== 0)  ){
                         messages.push(`В ${getOrderName(i)} указана офстека в пачках! Не забудьте указать вылет ноль!`);
                     }else if (paperType1 && (paperType1.innerText.includes("СНЕГУРОЧКА") && !useMargins.checked)){
                         messages.push(`в ${getOrderName(i)} Необходимо поставить галочку напротив "Использовать поля (цифр. печ.)"!`);
+                    }
+                    // Проверка на бумагу
+                    if (paperType1.innerText.includes("-- Другая --")){
+                        messages.push(`Не указана Бумага`);
                     }
 
                    
@@ -590,7 +606,7 @@ document.addEventListener('keydown', function(event) {
 
 
 
-        if (pageContent.includes(searchText) && pageContent.includes(searchText2)&& pageContent.includes(searchText3)) {
+        if (pageContent.includes(searchText) && pageContent.includes(searchText2)&& pageContent.includes(searchText3) && choosenCalcId) {
             orderCheckButton.style.display = 'block'; // Показываем кнопку
             const new3Style = document.createElement('style');
             new3Style.type = "text/css"
