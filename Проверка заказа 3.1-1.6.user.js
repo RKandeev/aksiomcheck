@@ -602,22 +602,16 @@
               productZKList[j].innerText.includes(
                 "Термопереплет (кбс), толщина блока от 3 мм - pr @ "
               ) &&
-              backLamination.value != 0
+              lamPlot && found1Plus1
             ) {
               productZKtr = j;
-              productZKValue =
-                productZKList[productZKtr].querySelector("#Quantity").value;
-              backLamination.style.backgroundColor = "#FA8072";
               messages.push(
                 `Двухстороняя ламинация недоступна при термопереплете в ${getOrderName(
                   i
                 )}! Выберите одностороннюю`
               );
-              window.scrollTo({
-                top: Tirazh.offsetTop,
-                behavior: "smooth",
-              });
-              productZKValue = 0;
+              
+              
             }
           }
         }
@@ -799,8 +793,8 @@
     if (
       pageContent.includes(searchText) &&
       pageContent.includes(searchText2) &&
-      pageContent.includes(searchText3) &&
-      choosenCalcId
+      pageContent.includes(searchText3) 
+      
     ) {
       orderCheckButton.style.display = "block"; // Показываем кнопку
       const new3Style = document.createElement("style");
