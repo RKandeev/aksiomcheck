@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Проверка заказа 5.0
+// @name         Проверка заказа 5.2
 // @namespace    http://tampermonkey.net/
 // @version      1.6
 // @description
@@ -209,9 +209,11 @@
         ? document.getElementById("ProdName").value
         : "";
       // const tirazh = document.getElementById('Tirazh') ? parseInt(document.getElementById('Tirazh').value) : 0;
-      let tirazhAll = document.getElementById("ProductTirazh").value;
-      if ((/робн/.test(prodName) || /браз/.test(prodName)) && tirazhAll == 1) {
+      let tirazhAll = document.getElementById("ProductTirazh");
+      if ((/робн/.test(prodName) || /браз/.test(prodName)) && tirazhAll.value == 1) {
         messages.push("Пробники оформляем в количестве двух штук!");
+        
+        tirazhAll.style.backgroundColor = "#FA8072";
       }
 
       //   if (tirazh === 0) {
@@ -293,23 +295,25 @@
 
         // Проверка условий 3 мм сквозная
         let trimSize = null;
-
+        const trimSizeColor = orderElem.querySelector("#TrimSize")
         trimSize = orderElem.querySelector("#TrimSize")
           ? parseInt(orderElem.querySelector("#TrimSize").value)
           : null;
-
+          const tirazhColor = orderElem.querySelector("#Tirazh")
         const tirazh = orderElem.querySelector("#Tirazh")
           ? parseInt(orderElem.querySelector("#Tirazh").value)
           : 0;
 
         if (tirazh === 0) {
           messages.push(`Укажите количество в тираже в ${getOrderName(i)}!`);
+          tirazhColor.style.backgroundColor = "#FA8072";
         }
         if (foundSkvoznaya) {
           if (trimSize !== 3) {
             messages.push(
               `На сквозную резку в ${getOrderName(i)} вылет ставим 3мм!`
             );
+            trimSizeColor.style.backgroundColor = "#FA8072";
           }
         }
 
@@ -321,6 +325,7 @@
               i
             )}`
           );
+          cifraLayoutType.style.backgroundColor = "#FA8072";
         }
         // Проверка софттач+мги
         if (foundLicoMgi && !lamSoft) {
@@ -515,7 +520,7 @@
       let Tirazh = document.getElementById("Tirazh");
       if (Tirazh.value == 0) {
         messages.push("Укажите тираж");
-        Tirazh.style.color = "red";
+        Tirazh.style.backgroundColor = "#FA8072";
         window.scrollTo({
           top: Tirazh.offsetTop,
           behavior: "smooth",
@@ -602,7 +607,7 @@
               productZKtr = j;
               productZKValue =
                 productZKList[productZKtr].querySelector("#Quantity").value;
-              backLamination.style.color = "#FA8072";
+              backLamination.style.backgroundColor = "#FA8072";
               messages.push(
                 `Двухстороняя ламинация недоступна при термопереплете в ${getOrderName(
                   i
