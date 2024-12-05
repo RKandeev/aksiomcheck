@@ -73,7 +73,7 @@
               document.body.removeChild(blurOverlay);
               document.body.removeChild(loaderContainer);
               blur = false;
-            }, 1500);
+            }, 1000);
           }
           console.log(`Нажали на кнопку ${k}`);
 
