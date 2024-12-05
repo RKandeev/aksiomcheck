@@ -63,6 +63,7 @@
       );
       for (let k = 0; k < editBtn.length; k++) {
         editBtn[k].addEventListener("click", function () {
+          choosenCalc = null
           document.body.appendChild(blurOverlay);
           document.body.appendChild(loaderContainer);
           
@@ -136,6 +137,7 @@
                 document.querySelector(
                   `#CheckAllTech > div:nth-child(12) > label > input[type=checkbox]`
                 ).checked = true;
+                
               }, 500);
             } else {
               closeBtnId = null;
@@ -247,6 +249,7 @@
     let new4Styles = `${closeBtnId} {margin-left: 500px;}`;
     new4Style.appendChild(document.createTextNode(new4Styles));
     document.head.appendChild(new4Style);
+    
   }, 100);
 
   function checkForTextAndDate() {
@@ -812,6 +815,8 @@
       console.log(calcButton);
 
       calcButton.click();
+      choosenCalcParent = null;
+      choosenCalc = null;
     }
 
     showMessages(messages);
@@ -950,13 +955,15 @@
       'img[src="img/calc/blocknot_blok.png"]'
     );
     const sostav = document.getElementById("CifraLayoutType");
+    const perekid = document.querySelector('img[src="img/calc/calendar_wall.png"]')
+    const blokn = document.querySelector('img[src="img/calc/blocknot_top.png"]')
 
     // Создаем цикл проверки по ордерам
 
     if (
       pageContent.includes(searchText) &&
       pageContent.includes(searchText2) &&
-      pageContent.includes(searchText3)
+      pageContent.includes(searchText3) 
     ) {
       if ((manyPages && !blocknote) || (listImg && !sostav) || sostav) {
         orderCheckButton.style.display = "block"; // Показываем кнопку
@@ -965,9 +972,21 @@
         let new3Styles = `${choosenCalcId} {display: none}`;
         new3Style.appendChild(document.createTextNode(new3Styles));
         document.head.appendChild(new3Style);
+      }else {
+        orderCheckButton.style.display = "none"; // Показываем кнопку
+        const new3Style = document.createElement("style");
+        new3Style.type = "text/css";
+        let new3Styles = `${choosenCalcId} {display: inline-block}`;
+        new3Style.appendChild(document.createTextNode(new3Styles));
+        document.head.appendChild(new3Style);
       }
     } else {
-      orderCheckButton.style.display = "none"; // Скрываем кнопку
+      orderCheckButton.style.display = "none"; // Показываем кнопку
+        const new3Style = document.createElement("style");
+        new3Style.type = "text/css";
+        let new3Styles = `${choosenCalcId} {display: inline-block}`;
+        new3Style.appendChild(document.createTextNode(new3Styles));
+        document.head.appendChild(new3Style);
     }
   }
 
