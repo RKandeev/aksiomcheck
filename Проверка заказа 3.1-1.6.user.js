@@ -25,6 +25,93 @@
   setInterval(() => {
     choosenCalcParent = document.querySelector("#Doc > div.TemplateChooser");
 
+    let resultCals = document.getElementById("result");
+
+    if (resultCals) {
+      let editBtn = resultCals.querySelectorAll(
+        "div > table > tbody > tr:nth-child(1) > td.control > div > button:nth-child(2)"
+      );
+      for (let k = 0; k < editBtn.length; k++) {
+        editBtn[k].addEventListener("click", function () {
+          console.log(`Нажали на кнопку ${k}`);
+
+          // Получаем индекс элемента, на который нажали
+
+          // Выводим индекс в консоль
+          setTimeout(() => {
+            choosenCalc = null;
+            choosenCalcId = null;
+            closeBtnId = null;
+            const manyPages = document.getElementById("DoubleBind");
+            const listImg = document.querySelector(
+              'img[src="img/calc/sheet.png"]'
+            );
+            const blocknote = document.querySelector(
+              'img[src="img/calc/blocknot_blok.png"]'
+            );
+            const sostav = document.getElementById("CifraLayoutType");
+            const convert = document.querySelector('img[src="img/calc/konvert.png"]')
+            if (listImg && !sostav) {
+              console.log("hello");
+
+              closeBtnId =
+                "#Doc > div > table:nth-child(7) > tbody > tr > td:nth-child(1) > button.btn.btn-default.btn-lg";
+              choosenCalcId =
+                "#Doc > div > table:nth-child(7) > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg";
+              choosenCalc = 2;
+            } else if (sostav) {
+              closeBtnId =
+                "#Doc > div > table:nth-child(6) > tbody > tr > td:nth-child(1) > button.btn.btn-default.btn-lg";
+              choosenCalcId =
+                "#Doc > div > table:nth-child(6) > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg";
+              choosenCalc = 0;
+            } else if (manyPages) {
+              choosenCalcId =
+                "#Doc > div > table:nth-child(9) > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg";
+              closeBtnId =
+                "#Doc > div > table:nth-child(9) > tbody > tr > td:nth-child(1) > button.btn.btn-default.btn-lg";
+              choosenCalc = 1;
+            } else if (convert) {
+              closeBtnId = null;
+              choosenCalcId = null;
+              setTimeout(() => {
+                document.querySelector(
+                  `#CheckAllTech > div:nth-child(1) > label > input[type=checkbox]`
+                ).checked = false;
+                document.querySelector(
+                  `#CheckAllTech > div:nth-child(2) > label > input[type=checkbox]`
+                ).checked = false;
+                document.querySelector(
+                  `#CheckAllTech > div:nth-child(3) > label > input[type=checkbox]`
+                ).checked = false;
+                document.querySelector(
+                  `#CheckAllTech > div:nth-child(4) > label > input[type=checkbox]`
+                ).checked = false;
+                document.querySelector(
+                  `#CheckAllTech > div:nth-child(5) > label > input[type=checkbox]`
+                ).checked = false;
+                document.querySelector(
+                  `#CheckAllTech > div:nth-child(12) > label > input[type=checkbox]`
+                ).checked = true;
+              }, 500);
+            }  else {
+              closeBtnId = null;
+              choosenCalcId = null;
+            }
+          }, 500);
+        });
+      }
+    }
+    // if(resultCals){
+    //   let resultCalsCount = [];
+    // const children1 = resultCals.children;
+    // for (let i = 0; i < children1.length; i++) {
+    //   if (children1[i]) {
+    //     resultCalsCount.push(children1[i]);
+    //   }
+    // }
+    // }
+
     if (choosenCalcParent) {
       for (let i = 0; i < 9; i++) {
         choosenCalcParent.children[i].addEventListener("click", function () {
@@ -33,7 +120,14 @@
           closeBtnId = null;
           // Получаем индекс элемента, на который нажали
           choosenCalc = parseInt(i);
-
+          const manyPages = document.getElementById("DoubleBind");
+          const listImg = document.querySelector(
+            'img[src="img/calc/sheet.png"]'
+          );
+          const blocknote = document.querySelector(
+            'img[src="img/calc/blocknot_blok.png"]'
+          );
+          const sostav = document.getElementById("CifraLayoutType");
           // Выводим индекс в консоль
 
           if (choosenCalc === 0) {
@@ -41,16 +135,21 @@
               "#Doc > div > table:nth-child(6) > tbody > tr > td:nth-child(1) > button.btn.btn-default.btn-lg";
             choosenCalcId =
               "#Doc > div > table:nth-child(6) > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg";
+            choosenCalc = 0;
           } else if (choosenCalc === 1) {
             choosenCalcId =
               "#Doc > div > table:nth-child(9) > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg";
             closeBtnId =
               "#Doc > div > table:nth-child(9) > tbody > tr > td:nth-child(1) > button.btn.btn-default.btn-lg";
+            choosenCalc = 1;
           } else if (choosenCalc === 2) {
+            console.log("hello");
+
             closeBtnId =
               "#Doc > div > table:nth-child(7) > tbody > tr > td:nth-child(1) > button.btn.btn-default.btn-lg";
             choosenCalcId =
               "#Doc > div > table:nth-child(7) > tbody > tr > td:nth-child(1) > button.btn.btn-success.btn-lg";
+            choosenCalc = 2;
           } else if (
             choosenCalc === 3 ||
             choosenCalc === 4 ||
@@ -210,9 +309,12 @@
         : "";
       // const tirazh = document.getElementById('Tirazh') ? parseInt(document.getElementById('Tirazh').value) : 0;
       let tirazhAll = document.getElementById("ProductTirazh");
-      if ((/робн/.test(prodName) || /браз/.test(prodName)) && tirazhAll.value == 1) {
+      if (
+        (/робн/.test(prodName) || /браз/.test(prodName)) &&
+        tirazhAll.value == 1
+      ) {
         messages.push("Пробники оформляем в количестве двух штук!");
-        
+
         tirazhAll.style.backgroundColor = "#FA8072";
       }
 
@@ -295,11 +397,11 @@
 
         // Проверка условий 3 мм сквозная
         let trimSize = null;
-        const trimSizeColor = orderElem.querySelector("#TrimSize")
+        const trimSizeColor = orderElem.querySelector("#TrimSize");
         trimSize = orderElem.querySelector("#TrimSize")
           ? parseInt(orderElem.querySelector("#TrimSize").value)
           : null;
-          const tirazhColor = orderElem.querySelector("#Tirazh")
+        const tirazhColor = orderElem.querySelector("#Tirazh");
         const tirazh = orderElem.querySelector("#Tirazh")
           ? parseInt(orderElem.querySelector("#Tirazh").value)
           : 0;
@@ -602,7 +704,8 @@
               productZKList[j].innerText.includes(
                 "Термопереплет (кбс), толщина блока от 3 мм - pr @ "
               ) &&
-              lamPlot && found1Plus1
+              lamPlot &&
+              found1Plus1
             ) {
               productZKtr = j;
               messages.push(
@@ -610,8 +713,6 @@
                   i
                 )}! Выберите одностороннюю`
               );
-              
-              
             }
           }
         }
@@ -788,26 +889,28 @@
     const searchText2 = "Тираж:";
     const searchText3 = "Размер";
     const pageContent = document.body.innerText;
-    const manyPages = document.getElementById('DoubleBind')
-    const listImg = document.querySelector('img[src="img/calc/sheet.png"]')
-    const blocknote = document.querySelector('img[src="img/calc/blocknot_blok.png"]')
-    const sostav = document.getElementById('CifraLayoutType')
+    const manyPages = document.getElementById("DoubleBind");
+    const listImg = document.querySelector('img[src="img/calc/sheet.png"]');
+    const blocknote = document.querySelector(
+      'img[src="img/calc/blocknot_blok.png"]'
+    );
+    const sostav = document.getElementById("CifraLayoutType");
 
     // Создаем цикл проверки по ордерам
 
     if (
       pageContent.includes(searchText) &&
       pageContent.includes(searchText2) &&
-      pageContent.includes(searchText3) 
-      
+      pageContent.includes(searchText3)
     ) {
-      if (manyPages && !blocknote || listImg && !sostav || sostav){
-      orderCheckButton.style.display = "block"; // Показываем кнопку
-      const new3Style = document.createElement("style");
-      new3Style.type = "text/css";
-      let new3Styles = `${choosenCalcId} {display: none}`;
-      new3Style.appendChild(document.createTextNode(new3Styles));
-      document.head.appendChild(new3Style);}
+      if ((manyPages && !blocknote) || (listImg && !sostav) || sostav) {
+        orderCheckButton.style.display = "block"; // Показываем кнопку
+        const new3Style = document.createElement("style");
+        new3Style.type = "text/css";
+        let new3Styles = `${choosenCalcId} {display: none}`;
+        new3Style.appendChild(document.createTextNode(new3Styles));
+        document.head.appendChild(new3Style);
+      }
     } else {
       orderCheckButton.style.display = "none"; // Скрываем кнопку
     }
