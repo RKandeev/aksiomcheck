@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Проверка заказа 5.2
+// @name         Проверка заказа 5.3
 // @namespace    http://tampermonkey.net/
 // @version      1.6
 // @description
@@ -11,7 +11,37 @@
 
 (function () {
   "use strict";
-  //
+  let blurOverlay = document.createElement("div");
+  blurOverlay.id = "Spinner";
+  blurOverlay.style.position = "fixed";
+  blurOverlay.style.top = "0";
+  blurOverlay.style.left = "0";
+  blurOverlay.style.width = "100%";
+  blurOverlay.style.height = "100%";
+  blurOverlay.style.backgroundColor = "rgba(2, 2, 2, 0.5)";
+  blurOverlay.style.backdropFilter = "blur(5px)";
+  blurOverlay.style.zIndex = "9998";
+  let blur = false;
+
+  const loaderContainer = document.createElement("div");
+  loaderContainer.style.position = "fixed";
+  loaderContainer.style.top = "50%";
+  loaderContainer.style.color = "#fff";
+  loaderContainer.style.textAlign = "center";
+  loaderContainer.style.textTransform = "uppercase";
+  loaderContainer.style.fontWeight = "700";
+  loaderContainer.style.left = "50%";
+  loaderContainer.style.transform = "translate(-50%, -50%)";
+  loaderContainer.style.padding = "15px 40px";
+  loaderContainer.style.zIndex = "10000";
+  loaderContainer.style.width = "500px"
+  loaderContainer.style.height = "500px"
+
+  let messageHTML = `<img src="https://raw.githubusercontent.com/Xemul032/Axiom/refs/heads/main/logo.png" width="300px" height="300px"/> <br/> <br/> <h3>Готовим калькулятор...</h3>`;
+
+  loaderContainer.innerHTML = messageHTML;
+  
+
   // Переменная для хранения начального значения даты
   let initialDateReadyValue = null;
   let checkButtonClicked = false; // Переменная для отслеживания нажатия кнопки "Проверить"
@@ -33,6 +63,17 @@
       );
       for (let k = 0; k < editBtn.length; k++) {
         editBtn[k].addEventListener("click", function () {
+          document.body.appendChild(blurOverlay);
+          document.body.appendChild(loaderContainer);
+          
+          blur = true;
+          if (blur) {
+            setTimeout(() => {
+              document.body.removeChild(blurOverlay);
+              document.body.removeChild(loaderContainer);
+              blur = false;
+            }, 1500);
+          }
           console.log(`Нажали на кнопку ${k}`);
 
           // Получаем индекс элемента, на который нажали
@@ -50,7 +91,9 @@
               'img[src="img/calc/blocknot_blok.png"]'
             );
             const sostav = document.getElementById("CifraLayoutType");
-            const convert = document.querySelector('img[src="img/calc/konvert.png"]')
+            const convert = document.querySelector(
+              'img[src="img/calc/konvert.png"]'
+            );
             if (listImg && !sostav) {
               console.log("hello");
 
@@ -94,7 +137,7 @@
                   `#CheckAllTech > div:nth-child(12) > label > input[type=checkbox]`
                 ).checked = true;
               }, 500);
-            }  else {
+            } else {
               closeBtnId = null;
               choosenCalcId = null;
             }
@@ -115,6 +158,18 @@
     if (choosenCalcParent) {
       for (let i = 0; i < 9; i++) {
         choosenCalcParent.children[i].addEventListener("click", function () {
+          document.body.appendChild(blurOverlay);
+          document.body.appendChild(loaderContainer);
+          blur = true;
+
+          if (blur) {
+            setTimeout(() => {
+              document.body.removeChild(blurOverlay);
+              document.body.removeChild(loaderContainer);
+
+              blur = false;
+            }, 1500);
+          }
           choosenCalc = null;
           choosenCalcId = null;
           closeBtnId = null;
