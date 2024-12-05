@@ -788,6 +788,11 @@
     const searchText2 = "Тираж:";
     const searchText3 = "Размер";
     const pageContent = document.body.innerText;
+    const manyPages = document.getElementById('DoubleBind')
+    const listImg = document.querySelector('img[src="img/calc/sheet.png"]')
+    const blocknote = document.querySelector('img[src="img/calc/blocknot_blok.png"]')
+    const sostav = document.getElementById('CifraLayoutType')
+
     // Создаем цикл проверки по ордерам
 
     if (
@@ -796,12 +801,13 @@
       pageContent.includes(searchText3) 
       
     ) {
+      if (manyPages && !blocknote || listImg && !sostav || sostav){
       orderCheckButton.style.display = "block"; // Показываем кнопку
       const new3Style = document.createElement("style");
       new3Style.type = "text/css";
       let new3Styles = `${choosenCalcId} {display: none}`;
       new3Style.appendChild(document.createTextNode(new3Styles));
-      document.head.appendChild(new3Style);
+      document.head.appendChild(new3Style);}
     } else {
       orderCheckButton.style.display = "none"; // Скрываем кнопку
     }
@@ -821,5 +827,5 @@
   setInterval(() => {
     initialDateReadyValue = null;
     checkForText = null;
-  }, 10000);
+  }, 1000);
 })();
