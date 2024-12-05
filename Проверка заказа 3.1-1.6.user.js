@@ -18,7 +18,7 @@
   blurOverlay.style.left = "0";
   blurOverlay.style.width = "100%";
   blurOverlay.style.height = "100%";
-  blurOverlay.style.backgroundColor = "rgba(2, 2, 2, 0.5)";
+  blurOverlay.style.backgroundColor = "rgba(2, 2, 2, 0.8)";
   blurOverlay.style.backdropFilter = "blur(5px)";
   blurOverlay.style.zIndex = "9998";
   let blur = false;
@@ -37,7 +37,7 @@
   loaderContainer.style.width = "500px"
   loaderContainer.style.height = "500px"
 
-  let messageHTML = `<img src="https://raw.githubusercontent.com/Xemul032/Axiom/refs/heads/main/logo.png" width="300px" height="300px"/> <br/> <br/> <h3>Готовим калькулятор...</h3>`;
+  let messageHTML = `<img src="https://raw.githubusercontent.com/Xemul032/Axiom/refs/heads/main/logo.png" width="250px" height="250px"/> <br/> <br/> <h3>Готовим калькулятор...</h3>`;
 
   loaderContainer.innerHTML = messageHTML;
   
