@@ -37,7 +37,7 @@
   loaderContainer.style.width = "500px"
   loaderContainer.style.height = "500px"
 
-  let messageHTML = `<img src="https://raw.githubusercontent.com/Xemul032/Axiom/refs/heads/main/logo.png" width="250px" height="250px"/> <br/> <br/> <h3>Готовим калькулятор...</h3>`;
+  let messageHTML = `<img src="https://raw.githubusercontent.com/Xemul032/Axiom/refs/heads/main/logo_newyear1.png" width="250px" height="134px"/> <br/> <br/> <h3>Готовим калькулятор...</h3>`;
 
   loaderContainer.innerHTML = messageHTML;
   
