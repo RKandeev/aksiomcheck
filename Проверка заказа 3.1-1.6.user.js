@@ -34,13 +34,12 @@
   loaderContainer.style.transform = "translate(-50%, -50%)";
   loaderContainer.style.padding = "15px 40px";
   loaderContainer.style.zIndex = "10000";
-  loaderContainer.style.width = "500px"
-  loaderContainer.style.height = "500px"
+  loaderContainer.style.width = "500px";
+  loaderContainer.style.height = "500px";
 
   let messageHTML = `<img src="https://raw.githubusercontent.com/Xemul032/Axiom/refs/heads/main/logo_newyear1.png" width="250px" height="134px"/> <br/> <br/> <h3>Готовим калькулятор...</h3>`;
 
   loaderContainer.innerHTML = messageHTML;
-  
 
   // Переменная для хранения начального значения даты
   let initialDateReadyValue = null;
@@ -63,10 +62,10 @@
       );
       for (let k = 0; k < editBtn.length; k++) {
         editBtn[k].addEventListener("click", function () {
-          choosenCalc = null
+          choosenCalc = null;
           document.body.appendChild(blurOverlay);
           document.body.appendChild(loaderContainer);
-          
+
           blur = true;
           if (blur) {
             setTimeout(() => {
@@ -137,7 +136,6 @@
                 document.querySelector(
                   `#CheckAllTech > div:nth-child(12) > label > input[type=checkbox]`
                 ).checked = true;
-                
               }, 500);
             } else {
               closeBtnId = null;
@@ -249,7 +247,6 @@
     let new4Styles = `${closeBtnId} {margin-left: 500px;}`;
     new4Style.appendChild(document.createTextNode(new4Styles));
     document.head.appendChild(new4Style);
-    
   }, 100);
 
   function checkForTextAndDate() {
@@ -555,6 +552,45 @@
             )} делается фольгирование. Оно ложится только на софттач ламинацию!`
           );
         }
+        // Проверка на количество листов для скрепки
+      let sumDensity = 0;
+      let paperSum = 0;
+      let paperType2 = document.querySelectorAll(
+        "#PaperType_chosen .chosen-single span"
+      );
+      let productPostpress = document.querySelector("#ProductPostpress");
+      let productZKList = productPostpress
+        .querySelector("#PostpressList")
+        .getElementsByTagName("tr");
+      if (productZKList.length >= 0) {
+        for (let j = 0; j < productZKList.length; j++) {
+          if (productZKList[j].innerText.includes("Скрепка")) {
+            console.log(paperType2);
+            if (paperType2.length === 1) {
+              let paperName = paperType2[0].innerText;
+              let density = Number(paperName.split(",").pop());
+              sumDensity += density;
+            } else {
+              let paperName = paperType2[1].innerText;
+              let density = Number(paperName.split(",").pop());
+              sumDensity += density;
+            }
+          }
+        }
+      }
+
+      const trs = productPostpress.querySelectorAll("tr");
+      for (let i = 0; i < trs.length; i++) {
+        const tdText = trs[i].innerText.toLowerCase();
+        if (tdText.includes("листоподбор")) {
+          const tds = trs[i].querySelectorAll("td");
+          paperSum = Number(tds[1].innerHTML);
+          break; // выходим из цикла после нахождения первого совпадения
+        }
+      }
+      if (sumDensity * paperSum > 2400) {
+        messages.push(`Слишком толстый блок для скрепки! Обратитесь к технологу!`);
+      }
 
         // Проверка на операции ZK
         let postpressList = orderElem.querySelector("#PostpressList");
@@ -686,6 +722,7 @@
           behavior: "smooth",
         });
       }
+
       let ordersArray = [];
       let prevArray = [];
       const currentArray = JSON.stringify(ordersArray);
@@ -704,6 +741,7 @@
       }
       console.log(ordersArray);
 
+      
       for (let i = 0; i < ordersArray.length; i++) {
         const orderElem = document.getElementById(ordersArray[i]);
 
@@ -798,6 +836,45 @@
             )} делается фольгирование. Оно ложится только на софттач ламинацию!`
           );
         }
+      }
+      // Проверка на количество листов для скрепки
+      let sumDensity = 0;
+      let paperSum = 0;
+      let paperType2 = document.querySelectorAll(
+        "#PaperType_chosen .chosen-single span"
+      );
+      let productPostpress = document.querySelector("#ProductPostpress");
+      let productZKList = productPostpress
+        .querySelector("#PostpressList")
+        .getElementsByTagName("tr");
+      if (productZKList.length >= 0) {
+        for (let j = 0; j < productZKList.length; j++) {
+          if (productZKList[j].innerText.includes("Скрепка")) {
+            console.log(paperType2);
+            if (paperType2.length === 1) {
+              let paperName = paperType2[0].innerText;
+              let density = Number(paperName.split(",").pop());
+              sumDensity += density;
+            } else {
+              let paperName = paperType2[1].innerText;
+              let density = Number(paperName.split(",").pop());
+              sumDensity += density;
+            }
+          }
+        }
+      }
+
+      const trs = productPostpress.querySelectorAll("tr");
+      for (let i = 0; i < trs.length; i++) {
+        const tdText = trs[i].innerText.toLowerCase();
+        if (tdText.includes("листоподбор")) {
+          const tds = trs[i].querySelectorAll("td");
+          paperSum = Number(tds[1].innerHTML);
+          break; // выходим из цикла после нахождения первого совпадения
+        }
+      }
+      if (sumDensity * paperSum > 2400) {
+        messages.push(`Слишком толстый блок для скрепки! Обратитесь к технологу!`);
       }
     }
 
@@ -955,15 +1032,19 @@
       'img[src="img/calc/blocknot_blok.png"]'
     );
     const sostav = document.getElementById("CifraLayoutType");
-    const perekid = document.querySelector('img[src="img/calc/calendar_wall.png"]')
-    const blokn = document.querySelector('img[src="img/calc/blocknot_top.png"]')
+    const perekid = document.querySelector(
+      'img[src="img/calc/calendar_wall.png"]'
+    );
+    const blokn = document.querySelector(
+      'img[src="img/calc/blocknot_top.png"]'
+    );
 
     // Создаем цикл проверки по ордерам
 
     if (
       pageContent.includes(searchText) &&
       pageContent.includes(searchText2) &&
-      pageContent.includes(searchText3) 
+      pageContent.includes(searchText3)
     ) {
       if ((manyPages && !blocknote) || (listImg && !sostav) || sostav) {
         orderCheckButton.style.display = "block"; // Показываем кнопку
@@ -972,7 +1053,7 @@
         let new3Styles = `${choosenCalcId} {display: none}`;
         new3Style.appendChild(document.createTextNode(new3Styles));
         document.head.appendChild(new3Style);
-      }else {
+      } else {
         orderCheckButton.style.display = "none"; // Показываем кнопку
         const new3Style = document.createElement("style");
         new3Style.type = "text/css";
@@ -982,11 +1063,11 @@
       }
     } else {
       orderCheckButton.style.display = "none"; // Показываем кнопку
-        const new3Style = document.createElement("style");
-        new3Style.type = "text/css";
-        let new3Styles = `${choosenCalcId} {display: inline-block}`;
-        new3Style.appendChild(document.createTextNode(new3Styles));
-        document.head.appendChild(new3Style);
+      const new3Style = document.createElement("style");
+      new3Style.type = "text/css";
+      let new3Styles = `${choosenCalcId} {display: inline-block}`;
+      new3Style.appendChild(document.createTextNode(new3Styles));
+      document.head.appendChild(new3Style);
     }
   }
 
