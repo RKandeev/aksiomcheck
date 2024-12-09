@@ -1082,8 +1082,8 @@
   // Создаем проверку по вопросу "Попасть в цвет"
   const colorCheckBtn = document.createElement("div");
   colorCheckBtn.style.position = "fixed";
-  colorCheckBtn.style.top = "0";
-  colorCheckBtn.style.left = "0";
+  colorCheckBtn.style.top = "10%";
+  colorCheckBtn.style.left = "15%";
   colorCheckBtn.style.width = "100vw";
   colorCheckBtn.style.zIndex = "5000";
   colorCheckBtn.style.height = "100vh";
