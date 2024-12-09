@@ -553,44 +553,46 @@
           );
         }
         // Проверка на количество листов для скрепки
-      let sumDensity = 0;
-      let paperSum = 0;
-      let paperType2 = document.querySelectorAll(
-        "#PaperType_chosen .chosen-single span"
-      );
-      let productPostpress = document.querySelector("#ProductPostpress");
-      let productZKList = productPostpress
-        .querySelector("#PostpressList")
-        .getElementsByTagName("tr");
-      if (productZKList.length >= 0) {
-        for (let j = 0; j < productZKList.length; j++) {
-          if (productZKList[j].innerText.includes("Скрепка")) {
-            console.log(paperType2);
-            if (paperType2.length === 1) {
-              let paperName = paperType2[0].innerText;
-              let density = Number(paperName.split(",").pop());
-              sumDensity += density;
-            } else {
-              let paperName = paperType2[1].innerText;
-              let density = Number(paperName.split(",").pop());
-              sumDensity += density;
+        let sumDensity = 0;
+        let paperSum = 0;
+        let paperType2 = document.querySelectorAll(
+          "#PaperType_chosen .chosen-single span"
+        );
+        let productPostpress = document.querySelector("#ProductPostpress");
+        let productZKList = productPostpress
+          .querySelector("#PostpressList")
+          .getElementsByTagName("tr");
+        if (productZKList.length >= 0) {
+          for (let j = 0; j < productZKList.length; j++) {
+            if (productZKList[j].innerText.includes("Скрепка")) {
+              console.log(paperType2);
+              if (paperType2.length === 1) {
+                let paperName = paperType2[0].innerText;
+                let density = Number(paperName.split(",").pop());
+                sumDensity += density;
+              } else {
+                let paperName = paperType2[1].innerText;
+                let density = Number(paperName.split(",").pop());
+                sumDensity += density;
+              }
             }
           }
         }
-      }
 
-      const trs = productPostpress.querySelectorAll("tr");
-      for (let i = 0; i < trs.length; i++) {
-        const tdText = trs[i].innerText.toLowerCase();
-        if (tdText.includes("листоподбор")) {
-          const tds = trs[i].querySelectorAll("td");
-          paperSum = Number(tds[1].innerHTML);
-          break; // выходим из цикла после нахождения первого совпадения
+        const trs = productPostpress.querySelectorAll("tr");
+        for (let i = 0; i < trs.length; i++) {
+          const tdText = trs[i].innerText.toLowerCase();
+          if (tdText.includes("листоподбор")) {
+            const tds = trs[i].querySelectorAll("td");
+            paperSum = Number(tds[1].innerHTML);
+            break; // выходим из цикла после нахождения первого совпадения
+          }
         }
-      }
-      if (sumDensity * paperSum > 2400) {
-        messages.push(`Слишком толстый блок для скрепки! Обратитесь к технологу!`);
-      }
+        if (sumDensity * paperSum > 2400) {
+          messages.push(
+            `Слишком толстый блок для скрепки! Обратитесь к технологу!`
+          );
+        }
 
         // Проверка на операции ZK
         let postpressList = orderElem.querySelector("#PostpressList");
@@ -741,7 +743,6 @@
       }
       console.log(ordersArray);
 
-      
       for (let i = 0; i < ordersArray.length; i++) {
         const orderElem = document.getElementById(ordersArray[i]);
 
@@ -874,7 +875,9 @@
         }
       }
       if (sumDensity * paperSum > 2400) {
-        messages.push(`Слишком толстый блок для скрепки! Обратитесь к технологу!`);
+        messages.push(
+          `Слишком толстый блок для скрепки! Обратитесь к технологу!`
+        );
       }
     }
 
@@ -1076,11 +1079,94 @@
     return `Ордер №${index + 1}`;
   }
 
+  // Создаем проверку по вопросу "Попасть в цвет"
+  const colorCheckBtn = document.createElement("div");
+  colorCheckBtn.style.position = "fixed";
+  colorCheckBtn.style.top = "0";
+  colorCheckBtn.style.left = "0";
+  colorCheckBtn.style.width = "100vw";
+  colorCheckBtn.style.zIndex = "5000";
+  colorCheckBtn.style.height = "100vh";
+  colorCheckBtn.style.backgroundColor = "transparent";
+  colorCheckBtn.style.display = "block";
+  let colorCheck = false;
+  let count1 = 0;
+  setTimeout(() => {
+    colorCheck = false;
+  }, 100000);
+  function checkForcolorCheck() {
+    const searchText1 = "Менеджер";
+    const searchText2 = "Орбита";
+    const searchText3 = "Контактное лицо";
+    const searchText4 = "Плательщик";
+    const searchText5 = "Комментарий для бухгалтерии";
+    const searchText6 = "Запустить в работу";
+    const bodyText = document.body.innerText;
+    if (
+      bodyText.includes(
+        searchText1 &&
+          searchText2 &&
+          searchText3 &&
+          searchText4 &&
+          searchText5 &&
+          searchText6
+      )
+    ) {
+      document.body.appendChild(colorCheckBtn);
+
+      colorCheck = true;
+
+      if (colorCheck === true && count1 < 1) {
+        count1++;
+        colorCheckBtn.style.display = "block";
+        const header1 = document.querySelector(
+          "#Summary > table > tbody > tr > td:nth-child(1) > div.formblock.Order553231 > table:nth-child(1) > tbody > tr > td:nth-child(3) > nobr > h4"
+        );
+
+        colorCheckBtn.addEventListener("click", function () {
+          colorCheckBtn.style.display = "none";
+          colorCheck = false;
+          let phraseFound = false;
+          // Проверяем наличие фразы "Попасть в цвет"
+          if (header1.textContent.includes("Попасть в цвет")) {
+            phraseFound = true;
+          }
+          // Выполняем действие при наличии фразы
+          if (phraseFound) {
+            // Здесь можно выполнить какое-то действие, например, вывести сообщение или изменить стиль элемента
+            console.log("Фраза найдена!");
+          } else {
+            console.log("Фраза не найдена.");
+            if (colorCheck === false) {
+              alert(
+                'В данном заказе не установлена операция "ПОПАСТЬ В ЦВЕТ", в таком случае - никаких гарантий по цвету - нет!!!'
+              );
+              colorCheck = true;
+            }
+          }
+        });
+      }
+    } else {
+      console.log("oppa");
+      count1 = 0;
+      colorCheck = false;
+    }
+  }
+
   // Запускаем проверку при загрузке страницы
   window.addEventListener("load", checkForTextAndDate);
   setInterval(checkForText, 500); // Проверка наличия текста каждую секунду
   setInterval(checkForTextAndDate, 1000); // Проверка даты каждые 2 секунды
+  setInterval(checkForcolorCheck, 1000);
+  setInterval(() => {
+    count = 0;
 
+    checkForcolorCheck();
+  }, 5000);
+  setInterval(() => {
+    count1 = 0;
+    colorCheck = false;
+  }, 100000);
   // Сбрасываем значение даты каждые 10 секунд
   setInterval(() => {
     initialDateReadyValue = null;
