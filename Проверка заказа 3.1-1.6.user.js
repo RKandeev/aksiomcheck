@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Проверка заказа 5.3
+// @name         Проверка заказа 5.4
 // @namespace    http://tampermonkey.net/
 // @version      1.6
 // @description
@@ -1091,9 +1091,11 @@
   colorCheckBtn.style.display = "block";
   let colorCheck = false;
   let count1 = 0;
+  let phraseFound1 = false;
   setTimeout(() => {
     colorCheck = false;
   }, 100000);
+  
   function checkForcolorCheck() {
     const searchText1 = "Менеджер";
     const searchText2 = "Орбита";
@@ -1103,16 +1105,9 @@
     const searchText6 = "Запустить в работу";
     const searchText7 = "РЕКЛАМА";
     const bodyText = document.body.innerText;
-    const header3 = document.querySelectorAll(
-      "#Summary > table > tbody > tr > td:nth-child(1) > div.formblock > table:nth-child(1) > tbody > tr > td:nth-child(3) > nobr > h4 > span"
-      
-    );
-    let phraseFound1 = false;
-    header3.forEach((el) => {
-      if (el.textConent.includes("РЕКЛАМА")) {
-        phraseFound1 = true;
-      }
-    })
+    
+    
+    
     
     if (
       bodyText.includes(
@@ -1121,8 +1116,7 @@
           searchText3 &&
           searchText4 &&
           searchText5 &&
-          searchText6 &&
-          phraseFound1 === false
+          searchText6 
       )
     ) {
       document.body.appendChild(colorCheckBtn);
@@ -1143,7 +1137,7 @@
           let phraseFound = false;
           // Проверяем наличие фразы "Попасть в цвет"
           header1.forEach((e) => {
-            if (e.textContent.includes("Попасть в цвет")) {
+            if ((e.textContent.includes("Попасть в цвет")) || (e.textContent.includes("РЕКЛАМА"))) {
               phraseFound = true;
             }
           });
@@ -1166,6 +1160,7 @@
     } else {
       count1 = 0;
       colorCheck = false;
+      
     }
   }
 
@@ -1182,6 +1177,7 @@
   setInterval(() => {
     count1 = 0;
     colorCheck = false;
+
   }, 100000);
   // Сбрасываем значение даты каждые 10 секунд
   setInterval(() => {
