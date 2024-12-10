@@ -1120,7 +1120,8 @@
         count1++;
         colorCheckBtn.style.display = "block";
         const header1 = document.querySelector(
-          "#Summary > table > tbody > tr > td:nth-child(1) > div.formblock.Order553231 > table:nth-child(1) > tbody > tr > td:nth-child(3) > nobr > h4"
+          "#Summary > table > tbody > tr > td:nth-child(1) > div.formblock > table:nth-child(1) > tbody > tr > td:nth-child(3) > nobr > h4"
+          
         );
 
         colorCheckBtn.addEventListener("click", function () {
@@ -1136,8 +1137,9 @@
             // Здесь можно выполнить какое-то действие, например, вывести сообщение или изменить стиль элемента
             console.log("Фраза найдена!");
           } else {
-            console.log("Фраза не найдена.");
+            
             if (colorCheck === false) {
+              console.log("Фраза не найдена.");
               alert(
                 'В данном заказе не установлена операция "ПОПАСТЬ В ЦВЕТ", в таком случае - никаких гарантий по цвету - нет!!!'
               );
@@ -1147,7 +1149,6 @@
         });
       }
     } else {
-      console.log("oppa");
       count1 = 0;
       colorCheck = false;
     }
