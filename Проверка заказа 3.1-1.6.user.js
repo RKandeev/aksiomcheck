@@ -1119,8 +1119,8 @@
       if (colorCheck === true && count1 < 1) {
         count1++;
         colorCheckBtn.style.display = "block";
-        const header1 = document.querySelector(
-          "#Summary > table > tbody > tr > td:nth-child(1) > div.formblock > table:nth-child(1) > tbody > tr > td:nth-child(3) > nobr > h4"
+        const header1 = document.querySelectorAll(
+          "#Summary > table > tbody > tr > td:nth-child(1) > div.formblock > table:nth-child(1) > tbody > tr > td:nth-child(3) > nobr > h4 > span"
           
         );
 
@@ -1129,20 +1129,22 @@
           colorCheck = false;
           let phraseFound = false;
           // Проверяем наличие фразы "Попасть в цвет"
-          if (header1.textContent.includes("Попасть в цвет")) {
-            phraseFound = true;
-          }
+          header1.forEach((e) => {
+            if (e.textContent.includes("Попасть в цвет")) {
+              phraseFound = true;
+            }
+          });
+         
           // Выполняем действие при наличии фразы
           if (phraseFound) {
             // Здесь можно выполнить какое-то действие, например, вывести сообщение или изменить стиль элемента
             console.log("Фраза найдена!");
-          } else {
+          } else if (!phraseFound){
             
             if (colorCheck === false) {
               console.log("Фраза не найдена.");
-              alert(
-                'В данном заказе не установлена операция "ПОПАСТЬ В ЦВЕТ", в таком случае - никаких гарантий по цвету - нет!!!'
-              );
+              showCenterMessage('В данном заказе не установлена операция "ПОПАСТЬ В ЦВЕТ", в таком случае - никаких гарантий по цвету - нет!!!')
+              
               colorCheck = true;
             }
           }
