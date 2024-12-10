@@ -1101,7 +1101,19 @@
     const searchText4 = "Плательщик";
     const searchText5 = "Комментарий для бухгалтерии";
     const searchText6 = "Запустить в работу";
+    const searchText7 = "РЕКЛАМА";
     const bodyText = document.body.innerText;
+    const header3 = document.querySelectorAll(
+      "#Summary > table > tbody > tr > td:nth-child(1) > div.formblock > table:nth-child(1) > tbody > tr > td:nth-child(3) > nobr > h4 > span"
+      
+    );
+    let phraseFound1 = false;
+    header3.forEach((el) => {
+      if (el.textConent.includes("РЕКЛАМА")) {
+        phraseFound1 = true;
+      }
+    })
+    
     if (
       bodyText.includes(
         searchText1 &&
@@ -1109,7 +1121,8 @@
           searchText3 &&
           searchText4 &&
           searchText5 &&
-          searchText6
+          searchText6 &&
+          phraseFound1 === false
       )
     ) {
       document.body.appendChild(colorCheckBtn);
