@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Проверка заказа 5.4
+// @name         Проверка заказа 5.4.2
 // @namespace    http://tampermonkey.net/
 // @version      1.6
 // @description
@@ -674,7 +674,7 @@
           const paperType = orderElem.querySelector(
             "#PaperType_chosen .chosen-single span"
           );
-          if (paperType && !paperType.innerText.includes("амоклей")) {
+          if (paperType && !paperType.innerText.includes("амокле")) {
             messages.push(
               `В ${getOrderName(
                 i
@@ -1082,7 +1082,7 @@
   // Создаем проверку по вопросу "Попасть в цвет"
   const colorCheckBtn = document.createElement("div");
   colorCheckBtn.style.position = "fixed";
-  colorCheckBtn.style.top = "10%";
+  colorCheckBtn.style.top = "55%";
   colorCheckBtn.style.left = "55%";
   colorCheckBtn.style.width = "100vw";
   colorCheckBtn.style.zIndex = "5000";
