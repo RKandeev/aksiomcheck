@@ -117,26 +117,27 @@
             } else if (convert) {
               closeBtnId = null;
               choosenCalcId = null;
-              setTimeout(() => {
-                document.querySelector(
-                  `#CheckAllTech > div:nth-child(1) > label > input[type=checkbox]`
-                ).checked = false;
-                document.querySelector(
-                  `#CheckAllTech > div:nth-child(2) > label > input[type=checkbox]`
-                ).checked = false;
-                document.querySelector(
-                  `#CheckAllTech > div:nth-child(3) > label > input[type=checkbox]`
-                ).checked = false;
-                document.querySelector(
-                  `#CheckAllTech > div:nth-child(4) > label > input[type=checkbox]`
-                ).checked = false;
-                document.querySelector(
-                  `#CheckAllTech > div:nth-child(5) > label > input[type=checkbox]`
-                ).checked = false;
-                document.querySelector(
-                  `#CheckAllTech > div:nth-child(12) > label > input[type=checkbox]`
-                ).checked = true;
-              }, 500);
+              // setTimeout(() => {
+              //   document.querySelector(
+              //     `#CheckAllTech > div:nth-child(1) > label > input[type=checkbox]`
+              //   ).checked = false;
+              //   document.querySelector(
+              //     `#CheckAllTech > div:nth-child(2) > label > input[type=checkbox]`
+              //   ).checked = false;
+              //   document.querySelector(
+              //     `#CheckAllTech > div:nth-child(3) > label > input[type=checkbox]`
+              //   ).checked = false;
+              //   document.querySelector(
+              //     `#CheckAllTech > div:nth-child(4) > label > input[type=checkbox]`
+              //   ).checked = false;
+              //   document.querySelector(
+              //     `#CheckAllTech > div:nth-child(5) > label > input[type=checkbox]`
+              //   ).checked = false;
+              //   document.querySelector(
+              //     `#CheckAllTech > div:nth-child(12) > label > input[type=checkbox]`
+              //   ).checked = true;
+                
+              // }, 500);
             } else {
               closeBtnId = null;
               choosenCalcId = null;
@@ -217,26 +218,26 @@
           } else if (choosenCalc === 7) {
             closeBtnId = null;
             choosenCalcId = null;
-            setTimeout(() => {
-              document.querySelector(
-                `#CheckAllTech > div:nth-child(1) > label > input[type=checkbox]`
-              ).checked = false;
-              document.querySelector(
-                `#CheckAllTech > div:nth-child(2) > label > input[type=checkbox]`
-              ).checked = false;
-              document.querySelector(
-                `#CheckAllTech > div:nth-child(3) > label > input[type=checkbox]`
-              ).checked = false;
-              document.querySelector(
-                `#CheckAllTech > div:nth-child(4) > label > input[type=checkbox]`
-              ).checked = false;
-              document.querySelector(
-                `#CheckAllTech > div:nth-child(5) > label > input[type=checkbox]`
-              ).checked = false;
-              document.querySelector(
-                `#CheckAllTech > div:nth-child(12) > label > input[type=checkbox]`
-              ).checked = true;
-            }, 500);
+            // setTimeout(() => {
+            //   document.querySelector(
+            //     `#CheckAllTech > div:nth-child(1) > label > input[type=checkbox]`
+            //   ).checked = false;
+            //   document.querySelector(
+            //     `#CheckAllTech > div:nth-child(2) > label > input[type=checkbox]`
+            //   ).checked = false;
+            //   document.querySelector(
+            //     `#CheckAllTech > div:nth-child(3) > label > input[type=checkbox]`
+            //   ).checked = false;
+            //   document.querySelector(
+            //     `#CheckAllTech > div:nth-child(4) > label > input[type=checkbox]`
+            //   ).checked = false;
+            //   document.querySelector(
+            //     `#CheckAllTech > div:nth-child(5) > label > input[type=checkbox]`
+            //   ).checked = false;
+            //   document.querySelector(
+            //     `#CheckAllTech > div:nth-child(12) > label > input[type=checkbox]`
+            //   ).checked = true;
+            // }, 500);
           }
         });
       }
@@ -474,6 +475,9 @@
           }
         }
 
+        
+        
+
         // Проверка условий для карточек и ламинации
         const cifraLayoutType = document.getElementById("CifraLayoutType");
         if (foundOlod && cifraLayoutType && cifraLayoutType.value !== "2") {
@@ -578,6 +582,36 @@
             }
           }
         }
+        //Проверка на люверс
+        function isInteger(num) {
+          return num % 1 === 0;
+        }
+        const postpressList1 = document.querySelector('#PostpressList')
+        const ltrs = postpressList1.querySelectorAll('tr')
+        console.log(ltrs);
+        
+        ltrs.forEach((elem)=>{
+          if (elem.innerText.includes('Люверс') === true){
+            console.log("я нашел люверс в ордере");
+            
+            console.log(elem);
+            let lQuantity = elem.querySelector('#Quantity').value
+            console.log(lQuantity);
+            
+            if (!isInteger(lQuantity)){
+              console.log('Сюда ннна');
+              messages.push(
+                `в ${getOrderName(i)} не целое число - убирай епрст и перекидывай на общую постпечать !`
+              );
+              
+            } else {
+              console.log('Число целое - от*ебись');
+              
+            }
+            
+            
+          }
+        })
 
         const trs = productPostpress.querySelectorAll("tr");
         for (let i = 0; i < trs.length; i++) {
@@ -864,6 +898,36 @@
           }
         }
       }
+
+      //Проверка на люверс
+      function isInteger(num) {
+        return num % 1 === 0;
+      }
+      const postpressList1 = document.querySelector('#PostpressList')
+      const ltrs = postpressList1.querySelectorAll('tr')
+      console.log(ltrs);
+      
+      ltrs.forEach((elem)=>{
+        if (elem.innerText.includes('Люверс') === true){
+          console.log("я нашел люверс в ордере");
+          
+          console.log(elem);
+          let lQuantity = elem.querySelector('#Quantity').value
+          console.log(lQuantity);
+          
+          if (!isInteger(lQuantity)){
+            messages.push(
+              `в ${getOrderName(i)} не целое число - убирай епрст и перекидывай на общую постпечать !`
+            );
+            
+          } else {
+            console.log('Число целое - от*ебись');
+            
+          }
+          
+          
+        }
+      })
 
       const trs = productPostpress.querySelectorAll("tr");
       for (let i = 0; i < trs.length; i++) {
