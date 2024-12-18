@@ -1171,8 +1171,12 @@
       "#Summary > table > tbody > tr > td:nth-child(1) > table > tbody:nth-child(3) > tr:nth-child(9) > td.PlanBlock > span"
     );
     if (timeToReady && timeReserve) {
-      timeToReady.value = "21:30";
-      timeReserve.innerHTML = "отгрузка на следующий день";
+      if (
+        timeReserve.innerHTML.includes("Расчетная дата сдачи заказа") === false
+      ) {
+        timeToReady.value = "21:30";
+        timeReserve.innerHTML = "отгрузка на следующий день";
+      }
     }
 
     if (
