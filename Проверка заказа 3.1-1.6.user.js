@@ -136,7 +136,7 @@
               //   document.querySelector(
               //     `#CheckAllTech > div:nth-child(12) > label > input[type=checkbox]`
               //   ).checked = true;
-                
+
               // }, 500);
             } else {
               closeBtnId = null;
@@ -475,9 +475,6 @@
           }
         }
 
-        
-        
-
         // Проверка условий для карточек и ламинации
         const cifraLayoutType = document.getElementById("CifraLayoutType");
         if (foundOlod && cifraLayoutType && cifraLayoutType.value !== "2") {
@@ -586,32 +583,30 @@
         function isInteger(num) {
           return num % 1 === 0;
         }
-        const postpressList1 = document.querySelector('#PostpressList')
-        const ltrs = postpressList1.querySelectorAll('tr')
+        const postpressList1 = document.querySelector("#PostpressList");
+        const ltrs = postpressList1.querySelectorAll("tr");
         console.log(ltrs);
-        
-        ltrs.forEach((elem)=>{
-          if (elem.innerText.includes('Люверс') === true){
+
+        ltrs.forEach((elem) => {
+          if (elem.innerText.includes("Люверс") === true) {
             console.log("я нашел люверс в ордере");
-            
+
             console.log(elem);
-            let lQuantity = elem.querySelector('#Quantity').value
+            let lQuantity = elem.querySelector("#Quantity").value;
             console.log(lQuantity);
-            
-            if (!isInteger(lQuantity)){
-              console.log('Сюда ннна');
+
+            if (!isInteger(lQuantity)) {
+              console.log("Сюда ннна");
               messages.push(
-                `в ${getOrderName(i)} не целое число - убирай епрст и перекидывай на общую постпечать !`
+                `в ${getOrderName(
+                  i
+                )} не целое число - убирай епрст и перекидывай на общую постпечать !`
               );
-              
             } else {
-              console.log('Число целое - от*ебись');
-              
+              console.log("Число целое - от*ебись");
             }
-            
-            
           }
-        })
+        });
 
         const trs = productPostpress.querySelectorAll("tr");
         for (let i = 0; i < trs.length; i++) {
@@ -903,31 +898,29 @@
       function isInteger(num) {
         return num % 1 === 0;
       }
-      const postpressList1 = document.querySelector('#PostpressList')
-      const ltrs = postpressList1.querySelectorAll('tr')
+      const postpressList1 = document.querySelector("#PostpressList");
+      const ltrs = postpressList1.querySelectorAll("tr");
       console.log(ltrs);
-      
-      ltrs.forEach((elem)=>{
-        if (elem.innerText.includes('Люверс') === true){
+
+      ltrs.forEach((elem) => {
+        if (elem.innerText.includes("Люверс") === true) {
           console.log("я нашел люверс в ордере");
-          
+
           console.log(elem);
-          let lQuantity = elem.querySelector('#Quantity').value
+          let lQuantity = elem.querySelector("#Quantity").value;
           console.log(lQuantity);
-          
-          if (!isInteger(lQuantity)){
+
+          if (!isInteger(lQuantity)) {
             messages.push(
-              `в ${getOrderName(i)} не целое число - убирай епрст и перекидывай на общую постпечать !`
+              `в ${getOrderName(
+                i
+              )} не целое число - убирай епрст и перекидывай на общую постпечать !`
             );
-            
           } else {
-            console.log('Число целое - от*ебись');
-            
+            console.log("Число целое - от*ебись");
           }
-          
-          
         }
-      })
+      });
 
       const trs = productPostpress.querySelectorAll("tr");
       for (let i = 0; i < trs.length; i++) {
@@ -1173,6 +1166,14 @@
     const header1 = document.querySelectorAll(
       "#Summary > table > tbody > tr > td:nth-child(1) > div.formblock > table:nth-child(1) > tbody > tr > td:nth-child(3) > nobr > h4 > span"
     );
+    const timeToReady = document.querySelector("#PlanReady");
+    const timeReserve = document.querySelector(
+      "#Summary > table > tbody > tr > td:nth-child(1) > table > tbody:nth-child(3) > tr:nth-child(9) > td.PlanBlock > span"
+    );
+    if (timeToReady && timeReserve) {
+      timeToReady.value = "В ночь";
+      timeReserve.innerHTML = "отгрузка на следующий день";
+    }
 
     if (
       bodyText.includes(
@@ -1192,7 +1193,7 @@
 
         colorCheckBtn.addEventListener("click", function () {
           colorBtnClick = true;
-          
+
           colorCheckBtn.style.display = "none";
 
           // Проверяем наличие фразы "Попасть в цвет"
