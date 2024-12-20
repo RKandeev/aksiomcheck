@@ -48,6 +48,7 @@
   let closeBtnId = "";
   // всекм привет
   // Функция для проверки текста "Номенклатура" и получения значения "DateReady"
+  
 
   let choosenCalcParent = null;
   let choosenCalc = null;
@@ -270,15 +271,19 @@
       //         initialDateReadyValue = null; // Сбрасываем начальное значение, если поле пустое
       //     }
       // }
-      const input = document.getElementById("DateReady");
-      let previousValue = input.value;
+      const input = document.getElementById("DateReady"); 
+      const input2 = document.querySelector("#Summary > table > tbody > tr > td:nth-child(1) > table > tbody:nth-child(3) > tr:nth-child(9) > td.PlanBlock > span.DateReady"); 
+      
+      let previousValue2 = input2.innerText;
       let changeDate = false;
+      let changeDate2 = false;
 
       const dateReadyInput = document.querySelector(
         "input#DateReady.center.datepicker.DateReady.hasDatepicker"
       );
       // Проверка каждую секунду
       if (dateReadyInput) {
+        let previousValue = input.value;
         let currentValue = null;
         setInterval(() => {
           currentValue = input.value;
@@ -287,6 +292,23 @@
             console.log(changeDate);
 
             previousValue = currentValue;
+          }
+          if (changeDate == true) {
+            showCenterMessage("Дата сдачи заказа изменилась!"); // Показываем сообщение в центре экрана
+            changeDate = false;
+          } else {
+            changeDate = false;
+          }
+        }, 1000);
+      } else if ( input2){
+        let currentValue = null;
+        setInterval(() => {
+          currentValue = input2.innerText;
+          if (currentValue !== previousValue2) {
+            changeDate = true;
+            console.log(changeDate);
+
+            previousValue2 = currentValue;
           }
           if (changeDate == true) {
             showCenterMessage("Дата сдачи заказа изменилась!"); // Показываем сообщение в центре экрана
@@ -1130,6 +1152,38 @@
       document.head.appendChild(new3Style);
     }
   }
+  function parseCustomDate(dateString) {
+    const months = {
+      января: 0,
+      февраля: 1,
+      марта: 2,
+      апреля: 3,
+      мая: 4,
+      июня: 5,
+      июля: 6,
+      августа: 7,
+      сентября: 8,
+      октября: 9,
+      ноября: 10,
+      декабря: 11,
+    };
+
+    const regex = /(\d{2}) (\w+) (\d{4}) (\d{2}):(\d{2})/;
+    const match = dateString.match(regex);
+
+    if (!match) {
+      return new Date("Invalid Date"); // Если формат не подходит
+    }
+
+    const [_, day, month, year, hours, minutes] = match;
+
+    const monthIndex = months[month.toLowerCase()];
+    if (monthIndex === undefined) {
+      return new Date("Invalid Date"); // Если месяц не распознан
+    }
+
+    return new Date(year, monthIndex, day, hours, minutes);
+  }
 
   // Функция для получения названия заказа по индексу
   function getOrderName(index) {
@@ -1169,29 +1223,111 @@
     );
     const timeToReady = document.querySelector("#PlanReady");
     const timeReserve = document.querySelector(
-      "#Summary > table > tbody > tr > td:nth-child(1) > table > tbody:nth-child(3) > tr:nth-child(9) > td.PlanBlock > span"
+      "#Summary > table > tbody > tr > td:nth-child(1) > table > tbody:nth-child(3) > tr:nth-child(9) > td.PlanBlock"
     );
+    const calcDate = document.querySelector(
+      "#History > table:nth-child(1) > tbody > tr:nth-child(2) > td.right.bold > nobr"
+    );
+
+    // const currentDate = new Date();
+
     let text;
     if (timeToReady && timeReserve) {
+      timeReserve.style.fontWeight = "700";
+      timeReserve.style.color = "red";
       if (
         timeReserve.innerHTML.includes("Расчетная дата сдачи заказа") === false
       ) {
-        timeToReady.value = "21:30";
-        timeReserve.innerHTML = "отгрузка на следующий день";
-      } 
-      else if (timeReserve.innerHTML.includes("Расчетная дата сдачи заказа") === true  && counter === 0){
+        // timeToReady.value = "21:30";
+        timeReserve.innerHTML = "ОТГРУЗКА НА СЛЕДУЮЩИЙ ДЕНЬ!";
+      } else if (
+        timeReserve.innerHTML.includes("Расчетная дата сдачи заказа") ===
+          true &&
+        counter === 0
+      ) {
         // Получаем текст
+
         text = timeReserve.innerText;
-        
-        
+        let calcDateText = calcDate.innerText;
+        // Исходная строка с датой
+
+        // Разделение строки на массив подстрок
+        const parts = calcDateText.split(" ");
+
+        // Извлечение дня, месяца и года из массива
+        const day = parts[0];
+        const monthString = parts[1];
+        const year = parts[2];
+        const months = {
+          января: 1,
+          февраля: 2,
+          марта: 3,
+          апреля: 4,
+          мая: 5,
+          июня: 6,
+          июля: 7,
+          августа: 8,
+          сентября: 9,
+          октября: 10,
+          ноября: 11,
+          декабря: 12,
+        };
+        const month = months[monthString.toLowerCase()];
+        // Создание новой даты
+        const newDate = `${year}/${month < 10 ? `0${month}` : month}/${day}`;
+        var nowDate = new Date();
+        var date1 =
+          nowDate.getFullYear() +
+          "/" +
+          (nowDate.getMonth() + 1) +
+          "/" +
+          nowDate.getDate();
+        console.log(date1);
+
+        // Вывод новой даты в нужном формате
+        console.log(newDate);
+        if (newDate === date1) {
+          console.log("Даты совпали");
+          text = text.substring(0, text.length - 7);
+          console.log(text);
+          timeReserve.innerText = `${text}  -  ОТГРУЗКА НА СЛЕДУЮЩИЙ ДЕНЬ!`;
+        } else {
+          console.log("Даты не совпали");
+          timeReserve.innerText =
+            "Расчетная дата сдачи заказа НЕИЗВЕСТНА - пересчитайте заказ";
+        }
+
+        // // Создаем объект даты из текстового формата
+        // const parsedDate = parseCustomDate(calcDateText);
+        // console.log(parsedDate);
+
+        // const currentDate = new Date();
+        // const today = new Date(
+        //   currentDate.getFullYear(),
+        //   currentDate.getMonth(),
+        //   currentDate.getDate()
+        // );
+        // // Приводим сравниваемую дату к формату без времени
+        // const targetDate = new Date(
+        //   parsedDate.getFullYear(),
+        //   parsedDate.getMonth(),
+        //   parsedDate.getDate()
+        // );
+
+        // // Сравниваем даты
+        // if (targetDate.getTime() === today.getTime()) {
+
+        //   console.log("Дата совпадает с текущей датой.");
+        // } else {
+
+        //   console.log("Дата не совпадает с текущей датой.");
+        // }
+
         // Удаляем последние 4 символа
-        text = text.substring(0, text.length - 7);
-        console.log(text);
-        timeReserve.innerText = text;
+
         counter = 1;
-        
+
         // // Заменяем текст в элементе
-        
       }
     } else {
       counter = 0;
@@ -1260,6 +1396,11 @@
       colorCheckBtn.style.display = "none";
     }
   }
+  setInterval(() => {
+    if (!document.body.innerText.includes("ОТГРУЗКА НА СЛЕДУЮЩИЙ ДЕНЬ!")) {
+      counter = 0;
+    }
+  }, 1000);
 
   // Запускаем проверку при загрузке страницы
   window.addEventListener("load", checkForTextAndDate);
@@ -1273,7 +1414,6 @@
   }, 1000);
   setInterval(() => {
     count1 = 0;
-    counter = 0;
   }, 100000);
   // Сбрасываем значение даты каждые 10 секунд
   setInterval(() => {
