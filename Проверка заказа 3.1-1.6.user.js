@@ -1258,72 +1258,72 @@
       DateReady.classList.add("changed");
       let DateReady1 = DateReady.innerText;
 
-      function addOneDay(dateString) {
-        const daysOfWeek = [
-          "Воскресенье",
-          "Понедельник",
-          "Вторник",
-          "Среда",
-          "Четверг",
-          "Пятница",
-          "Суббота",
-        ];
-        const months = [
-          "января",
-          "февраля",
-          "марта",
-          "апреля",
-          "мая",
-          "июня",
-          "июля",
-          "августа",
-          "сентября",
-          "октября",
-          "ноября",
-          "декабря",
-        ];
+      // function addOneDay(dateString) {
+      //   const daysOfWeek = [
+      //     "Воскресенье",
+      //     "Понедельник",
+      //     "Вторник",
+      //     "Среда",
+      //     "Четверг",
+      //     "Пятница",
+      //     "Суббота",
+      //   ];
+      //   const months = [
+      //     "января",
+      //     "февраля",
+      //     "марта",
+      //     "апреля",
+      //     "мая",
+      //     "июня",
+      //     "июля",
+      //     "августа",
+      //     "сентября",
+      //     "октября",
+      //     "ноября",
+      //     "декабря",
+      //   ];
 
-        let date;
+      //   let date;
 
-        // Определяем формат даты и парсим
-        if (/\d{2}\/\d{2}\/\d{4}/.test(dateString)) {
-          // Формат: "Суббота, 21/12/2024"
-          const [, day, month, year] = dateString.match(
-            /(\d{2})\/(\d{2})\/(\d{4})/
-          );
-          date = new Date(`${year}-${month}-${day}`);
-        } else {
-          // Формат: "Суббота, 21 декабря 2024"
-          const [, day, monthName, year] = dateString.match(
-            /(\d{1,2})\s([а-яё]+)\s(\d{4})/i
-          );
-          const monthIndex = months.indexOf(monthName);
-          if (monthIndex === -1) {
-            throw new Error("Неверный формат даты");
-          }
-          date = new Date(year, monthIndex, day);
-        }
+      //   // Определяем формат даты и парсим
+      //   if (/\d{2}\/\d{2}\/\d{4}/.test(dateString)) {
+      //     // Формат: "Суббота, 21/12/2024"
+      //     const [, day, month, year] = dateString.match(
+      //       /(\d{2})\/(\d{2})\/(\d{4})/
+      //     );
+      //     date = new Date(`${year}-${month}-${day}`);
+      //   } else {
+      //     // Формат: "Суббота, 21 декабря 2024"
+      //     const [, day, monthName, year] = dateString.match(
+      //       /(\d{1,2})\s([а-яё]+)\s(\d{4})/i
+      //     );
+      //     const monthIndex = months.indexOf(monthName);
+      //     if (monthIndex === -1) {
+      //       throw new Error("Неверный формат даты");
+      //     }
+      //     date = new Date(year, monthIndex, day);
+      //   }
 
-        // Добавляем 1 день
-        date.setDate(date.getDate() + 1);
+      //   // Добавляем 1 день
+      //   date.setDate(date.getDate() + 1);
 
-        // Формируем обновленный день недели
-        const dayOfWeek = daysOfWeek[date.getDay()];
+      //   // Формируем обновленный день недели
+      //   const dayOfWeek = daysOfWeek[date.getDay()];
 
-        // Формируем выходные строки для двух форматов
-        const formattedDate1 = `${dayOfWeek}, ${String(date.getDate()).padStart(
-          2,
-          "0"
-        )}/${String(date.getMonth() + 1).padStart(
-          2,
-          "0"
-        )}/${date.getFullYear()}`;
-        const formattedDate2 = `${dayOfWeek}, ${date.getDate()} ${
-          months[date.getMonth()]
-        } ${date.getFullYear()}`;
+      //   // Формируем выходные строки для двух форматов
+      //   const formattedDate1 = `${dayOfWeek}, ${String(date.getDate()).padStart(
+      //     2,
+      //     "0"
+      //   )}/${String(date.getMonth() + 1).padStart(
+      //     2,
+      //     "0"
+      //   )}/${date.getFullYear()}`;
+      //   const formattedDate2 = `${dayOfWeek}, ${date.getDate()} ${
+      //     months[date.getMonth()]
+      //   } ${date.getFullYear()}`;
 
-        return { formattedDate1, formattedDate2 };
-      }
+      //   return { formattedDate1, formattedDate2 };
+      // }
 
       DateReady.innerText = addOneDay(DateReady1).formattedDate1;
 
@@ -1552,6 +1552,7 @@
       const buttonDone = document.querySelector(
         "#vmClientForm > div:nth-child(1) > div > div:nth-child(2) > div:nth-child(6) > table:nth-child(3) > tbody > tr > td:nth-child(2) > div > button.btn.btn-success"
       );
+
       // Флаг для отслеживания необходимости проверки видимости #danger
       let dangerVisibilityChecked = false;
 
@@ -1570,7 +1571,6 @@
           buttonDone.style.display = "block";
         }
         dangerVisibilityChecked = false;
-        toggleButtonVisibility();
       }
 
       // Функция для управления видимостью кнопки в зависимости от видимости элемента #danger
@@ -1586,7 +1586,6 @@
             //   "Вы пытаетесь создать ДУБЛЬ - так нельзя! Если прям нужно создать дубль - обращайтесь к Коммерческому директору"
             // );
             buttonDone.style.display = "none"; // скрываем кнопку, если элемент #danger видим
-            
           } else {
             buttonDone.style.display = "block"; // показываем кнопку, если элемент #danger не видим
           }
@@ -1601,6 +1600,7 @@
       clientInn.addEventListener("input", checkInputForNumbersOnly);
 
       // Отслеживаем изменения видимости #danger
+
       new MutationObserver(toggleButtonVisibility).observe(
         document.querySelector("body"),
         {
