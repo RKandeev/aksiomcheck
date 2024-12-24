@@ -48,7 +48,6 @@
   let closeBtnId = "";
   // всекм привет
   // Функция для проверки текста "Номенклатура" и получения значения "DateReady"
-  
 
   let choosenCalcParent = null;
   let choosenCalc = null;
@@ -253,9 +252,10 @@
 
   function checkForTextAndDate() {
     const searchText = "Номенклатура";
+    const searchText1 = "Номенклатура по умолчанию";
     const bodyText = document.body.innerText;
 
-    if (bodyText.includes(searchText)) {
+    if (bodyText.includes(searchText) && !bodyText.includes(searchText1)) {
       // if (dateReadyInput) {
       //     const dateReadyValue = dateReadyInput.value;
 
@@ -271,15 +271,20 @@
       //         initialDateReadyValue = null; // Сбрасываем начальное значение, если поле пустое
       //     }
       // }
-      const input = document.getElementById("DateReady"); 
-      const input2 = document.querySelector("#Summary > table > tbody > tr > td:nth-child(1) > table > tbody:nth-child(3) > tr:nth-child(9) > td.PlanBlock > span.DateReady"); 
-      
+      const input = document.getElementById("DateReady");
+      const input2 = document.querySelector(
+        "#Summary > table > tbody > tr > td:nth-child(1) > table > tbody:nth-child(3) > tr:nth-child(9) > td.PlanBlock > span.DateReady"
+      );
+
       let previousValue2 = input2.innerText;
       let changeDate = false;
       let changeDate2 = false;
 
       const dateReadyInput = document.querySelector(
         "input#DateReady.center.datepicker.DateReady.hasDatepicker"
+      );
+      const DateReady1 = document.querySelector(
+        "#Summary > table > tbody > tr > td:nth-child(1) > table > tbody:nth-child(3) > tr:nth-child(9) > td.PlanBlock > span.DateReady"
       );
       // Проверка каждую секунду
       if (dateReadyInput) {
@@ -295,12 +300,15 @@
           }
           if (changeDate == true) {
             showCenterMessage("Дата сдачи заказа изменилась!"); // Показываем сообщение в центре экрана
+            if (DateReady1.classList.contains("changed") == true) {
+              DateReady1.classList.remove("changed");
+            }
             changeDate = false;
           } else {
             changeDate = false;
           }
         }, 1000);
-      } else if ( input2){
+      } else if (input2) {
         let currentValue = null;
         setInterval(() => {
           currentValue = input2.innerText;
@@ -312,6 +320,9 @@
           }
           if (changeDate == true) {
             showCenterMessage("Дата сдачи заказа изменилась!"); // Показываем сообщение в центре экрана
+            if (DateReady1.classList.contains("changed") == true) {
+              DateReady1.classList.remove("changed");
+            }
             changeDate = false;
           } else {
             changeDate = false;
@@ -1204,6 +1215,7 @@
   document.body.appendChild(colorCheckBtn);
   let colorCheck = false;
   let count1 = 0;
+  let count2 = 0;
   let phraseFound1 = false;
   setTimeout(() => {
     colorCheck = false;
@@ -1221,117 +1233,194 @@
     const header1 = document.querySelectorAll(
       "#Summary > table > tbody > tr > td:nth-child(1) > div.formblock > table:nth-child(1) > tbody > tr > td:nth-child(3) > nobr > h4 > span"
     );
-    const timeToReady = document.querySelector("#PlanReady");
-    const timeReserve = document.querySelector(
-      "#Summary > table > tbody > tr > td:nth-child(1) > table > tbody:nth-child(3) > tr:nth-child(9) > td.PlanBlock"
+
+    const DateReady = document.querySelector(
+      "#Summary > table > tbody > tr > td:nth-child(1) > table > tbody:nth-child(3) > tr:nth-child(9) > td.PlanBlock > span.DateReady"
+    );
+    const DateReady1 = document.querySelector(
+      "#Summary > table > tbody > tr > td:nth-child(1) > table > tbody:nth-child(3) > tr:nth-child(9) > td.PlanBlock > span.DateReady"
     );
     const calcDate = document.querySelector(
       "#History > table:nth-child(1) > tbody > tr:nth-child(2) > td.right.bold > nobr"
     );
+    const reCalcDate = document.querySelector(
+      "#Summary > table > tbody > tr > td:nth-child(1) > table > tbody:nth-child(3) > tr:nth-child(9) > td.PlanBlock > button"
+    );
+    const loadingDate = document.querySelector(
+      "#Summary > table > tbody > tr > td:nth-child(1) > table > tbody:nth-child(3) > tr:nth-child(9) > td.PlanBlock"
+    );
+
+    if (
+      DateReady &&
+      bodyText.includes(searchText5) &&
+      DateReady.classList.contains("changed") == false
+    ) {
+      DateReady.classList.add("changed");
+      let DateReady1 = DateReady.innerText;
+
+      function addOneDay(dateString) {
+        const daysOfWeek = [
+          "Воскресенье",
+          "Понедельник",
+          "Вторник",
+          "Среда",
+          "Четверг",
+          "Пятница",
+          "Суббота",
+        ];
+        const months = [
+          "января",
+          "февраля",
+          "марта",
+          "апреля",
+          "мая",
+          "июня",
+          "июля",
+          "августа",
+          "сентября",
+          "октября",
+          "ноября",
+          "декабря",
+        ];
+
+        let date;
+
+        // Определяем формат даты и парсим
+        if (/\d{2}\/\d{2}\/\d{4}/.test(dateString)) {
+          // Формат: "Суббота, 21/12/2024"
+          const [, day, month, year] = dateString.match(
+            /(\d{2})\/(\d{2})\/(\d{4})/
+          );
+          date = new Date(`${year}-${month}-${day}`);
+        } else {
+          // Формат: "Суббота, 21 декабря 2024"
+          const [, day, monthName, year] = dateString.match(
+            /(\d{1,2})\s([а-яё]+)\s(\d{4})/i
+          );
+          const monthIndex = months.indexOf(monthName);
+          if (monthIndex === -1) {
+            throw new Error("Неверный формат даты");
+          }
+          date = new Date(year, monthIndex, day);
+        }
+
+        // Добавляем 1 день
+        date.setDate(date.getDate() + 1);
+
+        // Формируем обновленный день недели
+        const dayOfWeek = daysOfWeek[date.getDay()];
+
+        // Формируем выходные строки для двух форматов
+        const formattedDate1 = `${dayOfWeek}, ${String(date.getDate()).padStart(
+          2,
+          "0"
+        )}/${String(date.getMonth() + 1).padStart(
+          2,
+          "0"
+        )}/${date.getFullYear()}`;
+        const formattedDate2 = `${dayOfWeek}, ${date.getDate()} ${
+          months[date.getMonth()]
+        } ${date.getFullYear()}`;
+
+        return { formattedDate1, formattedDate2 };
+      }
+
+      DateReady.innerText = addOneDay(DateReady1).formattedDate1;
+
+      // Пример использования
+
+      const observer = new MutationObserver((mutationsList, observer) => {
+        for (let mutation of mutationsList) {
+          if (
+            mutation.type === "attributes" &&
+            !loadingDate.classList.contains("LoadingContent")
+          ) {
+            DateReady.innerText = addOneDay(DateReady1).formattedDate1;
+
+            // observer.disconnect(); // Прекращаем наблюдение после изменения
+            break;
+          }
+        }
+      });
+
+      // Настроим наблюдатель за кнопкой
+      observer.observe(loadingDate, { attributes: true });
+    }
 
     // const currentDate = new Date();
 
-    let text;
-    if (timeToReady && timeReserve) {
-      timeReserve.style.fontWeight = "700";
-      timeReserve.style.color = "red";
-      if (
-        timeReserve.innerHTML.includes("Расчетная дата сдачи заказа") === false
-      ) {
-        // timeToReady.value = "21:30";
-        timeReserve.innerHTML = "ОТГРУЗКА НА СЛЕДУЮЩИЙ ДЕНЬ!";
-      } else if (
-        timeReserve.innerHTML.includes("Расчетная дата сдачи заказа") ===
-          true &&
-        counter === 0
-      ) {
-        // Получаем текст
+    // let text;
+    // if (timeToReady && timeReserve) {
+    //   timeReserve.style.fontWeight = "700";
+    //   timeReserve.style.color = "red";
+    //   if (
+    //     timeReserve.innerHTML.includes("Расчетная дата сдачи заказа") === false
+    //   ) {
+    //     // timeToReady.value = "21:30";
+    //     timeReserve.innerHTML = "ОТГРУЗКА НА СЛЕДУЮЩИЙ ДЕНЬ!";
+    //   } else if (
+    //     timeReserve.innerHTML.includes("Расчетная дата сдачи заказа") ===
+    //       true &&
+    //     counter === 0
+    //   ) {
+    //     // Получаем текст
 
-        text = timeReserve.innerText;
-        let calcDateText = calcDate.innerText;
-        // Исходная строка с датой
+    //     text = timeReserve.innerText;
+    //     let calcDateText = calcDate.innerText;
+    //     // Исходная строка с датой
 
-        // Разделение строки на массив подстрок
-        const parts = calcDateText.split(" ");
+    //     // Разделение строки на массив подстрок
+    //     const parts = calcDateText.split(" ");
 
-        // Извлечение дня, месяца и года из массива
-        const day = parts[0];
-        const monthString = parts[1];
-        const year = parts[2];
-        const months = {
-          января: 1,
-          февраля: 2,
-          марта: 3,
-          апреля: 4,
-          мая: 5,
-          июня: 6,
-          июля: 7,
-          августа: 8,
-          сентября: 9,
-          октября: 10,
-          ноября: 11,
-          декабря: 12,
-        };
-        const month = months[monthString.toLowerCase()];
-        // Создание новой даты
-        const newDate = `${year}/${month < 10 ? `0${month}` : month}/${day}`;
-        var nowDate = new Date();
-        var date1 =
-          nowDate.getFullYear() +
-          "/" +
-          (nowDate.getMonth() + 1) +
-          "/" +
-          nowDate.getDate();
-        console.log(date1);
+    //     // Извлечение дня, месяца и года из массива
+    //     const day = parts[0];
+    //     const monthString = parts[1];
+    //     const year = parts[2];
+    //     const months = {
+    //       января: 1,
+    //       февраля: 2,
+    //       марта: 3,
+    //       апреля: 4,
+    //       мая: 5,
+    //       июня: 6,
+    //       июля: 7,
+    //       августа: 8,
+    //       сентября: 9,
+    //       октября: 10,
+    //       ноября: 11,
+    //       декабря: 12,
+    //     };
+    //     const month = months[monthString.toLowerCase()];
+    //     // Создание новой даты
+    //     const newDate = `${year}/${month < 10 ? `0${month}` : month}/${day}`;
+    //     var nowDate = new Date();
+    //     var date1 =
+    //       nowDate.getFullYear() +
+    //       "/" +
+    //       (nowDate.getMonth() + 1) +
+    //       "/" +
+    //       nowDate.getDate();
+    //     console.log(date1);
 
-        // Вывод новой даты в нужном формате
-        console.log(newDate);
-        if (newDate === date1) {
-          console.log("Даты совпали");
-          text = text.substring(0, text.length - 7);
-          console.log(text);
-          timeReserve.innerText = `${text}  -  ОТГРУЗКА НА СЛЕДУЮЩИЙ ДЕНЬ!`;
-        } else {
-          console.log("Даты не совпали");
-          timeReserve.innerText =
-            "Расчетная дата сдачи заказа НЕИЗВЕСТНА - пересчитайте заказ";
-        }
+    //     // Вывод новой даты в нужном формате
+    //     console.log(newDate);
+    //     if (newDate === date1) {
+    //       console.log("Даты совпали");
+    //       text = text.substring(0, text.length - 7);
+    //       console.log(text);
+    //       timeReserve.innerText = `${text}  -  ОТГРУЗКА НА СЛЕДУЮЩИЙ ДЕНЬ!`;
+    //     } else {
+    //       console.log("Даты не совпали");
+    //       timeReserve.innerText =
+    //         "Расчетная дата сдачи заказа НЕИЗВЕСТНА - пересчитайте заказ";
+    //     }
 
-        // // Создаем объект даты из текстового формата
-        // const parsedDate = parseCustomDate(calcDateText);
-        // console.log(parsedDate);
+    //     counter = 1;
 
-        // const currentDate = new Date();
-        // const today = new Date(
-        //   currentDate.getFullYear(),
-        //   currentDate.getMonth(),
-        //   currentDate.getDate()
-        // );
-        // // Приводим сравниваемую дату к формату без времени
-        // const targetDate = new Date(
-        //   parsedDate.getFullYear(),
-        //   parsedDate.getMonth(),
-        //   parsedDate.getDate()
-        // );
-
-        // // Сравниваем даты
-        // if (targetDate.getTime() === today.getTime()) {
-
-        //   console.log("Дата совпадает с текущей датой.");
-        // } else {
-
-        //   console.log("Дата не совпадает с текущей датой.");
-        // }
-
-        // Удаляем последние 4 символа
-
-        counter = 1;
-
-        // // Заменяем текст в элементе
-      }
-    } else {
-      counter = 0;
-    }
+    //   }
+    // } else {
+    //   counter = 0;
+    // }
 
     if (
       bodyText.includes(
@@ -1396,6 +1485,134 @@
       colorCheckBtn.style.display = "none";
     }
   }
+  // Проверка юр лиц для клиентов
+  const checkingClientsBtn = document.createElement("div");
+  checkingClientsBtn.style.position = "fixed";
+  checkingClientsBtn.style.bottom = "0";
+  checkingClientsBtn.style.width = "100vw";
+  checkingClientsBtn.style.zIndex = "5000";
+  checkingClientsBtn.style.height = "10%";
+  checkingClientsBtn.style.backgroundColor = "red";
+  checkingClientsBtn.style.display = "none";
+  document.body.appendChild(checkingClientsBtn);
+  let checkingClientsBtnClick = false;
+
+  function checkingClients() {
+    const bodyText = document.body.innerText;
+    const searchText1 = "Название";
+    const searchText2 = "ИНН";
+    const searchText3 = "Полное название";
+    const searchText4 = "КПП";
+    const searchText5 = "БИК";
+    const searchText6 = "Банк";
+    const clientName = document.querySelector(
+      "#vmClientForm > div:nth-child(1) > div > div:nth-child(2) > div:nth-child(6) > table:nth-child(3) > tbody > tr > td:nth-child(2) > table:nth-child(2) > tbody > tr:nth-child(1) > td:nth-child(2) > input"
+    );
+    const clientInn = document.querySelector(
+      "#vmClientForm > div:nth-child(1) > div > div:nth-child(2) > div:nth-child(6) > table:nth-child(3) > tbody > tr > td:nth-child(2) > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(2) > div > input"
+    );
+
+    if (
+      bodyText.includes(searchText1) &&
+      bodyText.includes(searchText2) &&
+      bodyText.includes(searchText3) &&
+      bodyText.includes(searchText4) &&
+      bodyText.includes(searchText5) &&
+      bodyText.includes(searchText6)
+    ) {
+      function checkInputValue() {
+        let clientValue = clientName.value.toLowerCase();
+        // Проверяем, содержит ли строка "физ" и "лиц"
+        if (clientValue.includes("физ") && clientValue.includes("лиц")) {
+          checkingClientsBtn.style.display = "block"; // Показать кнопку, если содержит
+        } else {
+          checkingClientsBtn.style.display = "none"; // Скрыть кнопку, если не содержит
+        }
+      }
+      // Функция для проверки начала строки при нажатии на кнопку
+      function handleClick() {
+        const clientValue = clientName.value.trim();
+
+        // Проверяем, начинается ли строка с "ОПЛАТА ФИЗЛИЦА - "
+        if (clientValue.startsWith("ОПЛАТА ФИЗЛИЦА - ")) {
+          checkingClientsBtn.style.display = "none";
+          console.log("Все ок");
+        } else {
+          navigator.clipboard.writeText("ОПЛАТА ФИЗЛИЦА - ");
+          console.log("Неверно");
+          showCenterMessage(
+            'в поле Название необходимо прописать большими буквами без кавычек "ОПЛАТА ФИЗЛИЦА - ", данный текст уже скопирован - можете просто вставить'
+          );
+        }
+      }
+      clientName.addEventListener("input", checkInputValue);
+
+      // Обработчик нажатия на кнопку
+      checkingClientsBtn.addEventListener("click", handleClick);
+      const buttonDone = document.querySelector(
+        "#vmClientForm > div:nth-child(1) > div > div:nth-child(2) > div:nth-child(6) > table:nth-child(3) > tbody > tr > td:nth-child(2) > div > button.btn.btn-success"
+      );
+      // Флаг для отслеживания необходимости проверки видимости #danger
+      let dangerVisibilityChecked = false;
+
+      // Функция для проверки ввода на наличие символов, отличных от цифр
+      function checkInputForNumbersOnly() {
+        const clientInnValue = clientInn.value;
+
+        // Проверяем, содержит ли строка что-то кроме цифр
+        const nonDigits = /\D/; // Регулярное выражение, которое ищет все символы, не являющиеся цифрами
+
+        if (nonDigits.test(clientInnValue)) {
+          clientInn.value = clientInnValue;
+          showCenterMessage("Поле ИНН не поддерживает символы кроме цифр!");
+          buttonDone.style.display = "none";
+        } else {
+          buttonDone.style.display = "block";
+        }
+        dangerVisibilityChecked = false;
+        toggleButtonVisibility();
+      }
+
+      // Функция для управления видимостью кнопки в зависимости от видимости элемента #danger
+      function toggleButtonVisibility() {
+        const dangerElement = document.querySelector(
+          "#vmClientForm > div:nth-child(1) > div > div:nth-child(2) > div:nth-child(6) > table:nth-child(3) > tbody > tr > td:nth-child(2) > table:nth-child(2) > tbody > tr:nth-child(3) > td > div"
+        ); // получаем элемент #danger
+
+        // Проверяем, виден ли элемент #danger
+        if (!dangerVisibilityChecked) {
+          if (dangerElement && dangerElement.offsetParent !== null) {
+            // showCenterMessage(
+            //   "Вы пытаетесь создать ДУБЛЬ - так нельзя! Если прям нужно создать дубль - обращайтесь к Коммерческому директору"
+            // );
+            buttonDone.style.display = "none"; // скрываем кнопку, если элемент #danger видим
+            
+          } else {
+            buttonDone.style.display = "block"; // показываем кнопку, если элемент #danger не видим
+          }
+        }
+
+        // Устанавливаем флаг, чтобы не повторять проверку
+        dangerVisibilityChecked = true;
+      }
+
+      // Отслеживаем изменения в input.form
+
+      clientInn.addEventListener("input", checkInputForNumbersOnly);
+
+      // Отслеживаем изменения видимости #danger
+      new MutationObserver(toggleButtonVisibility).observe(
+        document.querySelector("body"),
+        {
+          childList: true,
+          subtree: true,
+        }
+      );
+    } else {
+      checkingClientsBtn.style.display = "none";
+    }
+  }
+
   setInterval(() => {
     if (!document.body.innerText.includes("ОТГРУЗКА НА СЛЕДУЮЩИЙ ДЕНЬ!")) {
       counter = 0;
@@ -1407,6 +1624,7 @@
   setInterval(checkForText, 500); // Проверка наличия текста каждую секунду
   setInterval(checkForTextAndDate, 1000); // Проверка даты каждые 2 секунды
   setInterval(checkForcolorCheck, 100);
+  setInterval(checkingClients, 100);
   setInterval(() => {
     count = 0;
 
