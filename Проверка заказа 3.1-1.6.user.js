@@ -276,7 +276,6 @@
         "#Summary > table > tbody > tr > td:nth-child(1) > table > tbody:nth-child(3) > tr:nth-child(9) > td.PlanBlock > span.DateReady"
       );
 
-      let previousValue2 = input2.innerText;
       let changeDate = false;
       let changeDate2 = false;
 
@@ -310,6 +309,7 @@
         }, 1000);
       } else if (input2) {
         let currentValue = null;
+        let previousValue2 = input2.innerText;
         setInterval(() => {
           currentValue = input2.innerText;
           if (currentValue !== previousValue2) {
@@ -1612,6 +1612,64 @@
       checkingClientsBtn.style.display = "none";
     }
   }
+
+  setInterval(() => {
+    const statusIconCalc = document.querySelector(
+      '#Top > form > div > div > div > span:nth-child(2) > span.StatusIcon > img[src="img/status/status-calc.png"]'
+    );
+    const statusIconCalcWFiles = document.querySelector(
+      '#Top > form > div > div > div > span:nth-child(2) > span.StatusIcon > img[src="img/status/status-calc-files.png"]'
+    );
+    const statusIconNoFiles = document.querySelector(
+      '#Top > form > div > div > div > span:nth-child(2) > span.StatusIcon > img[src="img/status/status-nofiles.png"]'
+    );
+    const btnsgroup1 = document.querySelector(
+      "#Summary > table > tbody > tr > td:nth-child(1) > div.right > div > button:nth-child(1)"
+    );
+    const btnsgroup2 = document.querySelector(
+      "#Summary > table > tbody > tr > td:nth-child(1) > div.right > div > button:nth-child(2)"
+    );
+    if (statusIconCalc) {
+      let orders = document.querySelectorAll(
+        "#Summary > table > tbody > tr > td:nth-child(1) > .formblock"
+      );
+
+      orders.forEach((el, index) => {
+        let needCount = el.querySelector(
+          "table.inner > tbody > tr > td > table > tbody > tr > td.SkladBlock > table > tbody > tr:nth-child(1) > td.right.nobreak"
+        );
+        let stockRemain = el.querySelector(
+          "table.inner > tbody > tr > td > table > tbody > tr > td.SkladBlock > table > tbody > tr:nth-child(3) > td.right.nobreak"
+        );
+        let needToOther = el.querySelector(
+          "table.inner > tbody > tr > td > table > tbody > tr > td.SkladBlock > table > tbody > tr:nth-child(4) > td.right.nobreak"
+        );
+        let needCountValue = 0;
+        let stockRemainValue = 0;
+        let needToOtherValue = 0;
+
+        if (needToOther) {
+          needCountValue = Number(needCount.innerText.replace(/\s/g, ""));
+          stockRemainValue = Number(stockRemain.innerText.replace(/\s/g, ""));
+          needToOtherValue = Number(needToOther.innerText.replace(/\s/g, ""));
+          if (needCountValue + needToOtherValue + 50 <= stockRemainValue) {
+            console.log(`в ордере № ${index + 1} Бумаги хватает`);
+          } else {
+            console.log(`в ордере № ${index + 1} Бумаги нет блэт`);
+            btnsgroup2.style.display = "none";
+          }
+        } else {
+          if (needCountValue + 50 <= stockRemainValue) {
+            console.log(`в ордере № ${index + 1} Бумаги хватает`);
+          } else {
+            console.log(`в ордере № ${index + 1} Бумаги нет блэт`);
+            btnsgroup2.style.display = "none";
+
+          }
+        }
+      });
+    }
+  }, 5000);
 
   setInterval(() => {
     if (!document.body.innerText.includes("ОТГРУЗКА НА СЛЕДУЮЩИЙ ДЕНЬ!")) {
