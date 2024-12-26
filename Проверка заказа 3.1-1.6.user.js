@@ -1617,6 +1617,10 @@
     const statusIconCalc = document.querySelector(
       '#Top > form > div > div > div > span:nth-child(2) > span.StatusIcon > img[src="img/status/status-calc.png"]'
     );
+    const spinner = document.getElementsByClassName("spinner");
+    const statusIcon = document.querySelector(
+      "#Top > form > div > div > div > span:nth-child(2) > span.StatusIcon"
+    );
     const statusIconCalcWFiles = document.querySelector(
       '#Top > form > div > div > div > span:nth-child(2) > span.StatusIcon > img[src="img/status/status-calc-files.png"]'
     );
@@ -1637,14 +1641,19 @@
     );
     const fullWindow = document.querySelector("#Doc");
     setInterval(() => {
-      if (statusIconCalc !== null || statusIconCalcWFiles!== null || statusIconNoFiles !== null ) {
-        if (fullWindow.classList.contains("LoadingContent") === true){
+      if (
+        statusIconCalc !== null ||
+        statusIconCalcWFiles !== null ||
+        statusIconNoFiles !== null
+      ) {
+        if (fullWindow.classList.contains("LoadingContent") === true) {
           calcCheck = 0;
-
         }
       }
-    }, 500);
-
+      if (document.body.innerText.includes('Сохранить расчет') === true && spinner !== null) {
+        calcCheck = 0;
+      }
+    }, 100);
     if (statusIconCalc !== null && calcCheck === 0) {
       calcCheck = 1;
       let orders = document.querySelectorAll(
@@ -1672,7 +1681,7 @@
           console.log(stockRemainValue);
 
           if (
-            stockRemainValue > 0 ||
+            stockRemainValue > 0 &&
             needCountValue + needToOtherValue + 50 <= stockRemainValue
           ) {
             console.log(`в ордере № ${index + 1} Бумаги хватает`);
@@ -1688,7 +1697,9 @@
             ); // Показываем сообщение в центре экрана
           }
         } else {
-          if (stockRemainValue > 0 || needCountValue + 50 <= stockRemainValue) {
+          needCountValue = Number(needCount.innerText.replace(/\s/g, ""));
+          stockRemainValue = Number(stockRemain.innerText.replace(/\s/g, ""));
+          if (stockRemainValue > 0 && needCountValue + 50 <= stockRemainValue) {
             console.log(`в ордере № ${index + 1} Бумаги хватает`);
           } else {
             console.log(`в ордере № ${index + 1} Бумаги нет блэт`);
@@ -1728,7 +1739,7 @@
           stockRemainValue = Number(stockRemain.innerText.replace(/\s/g, ""));
           needToOtherValue = Number(needToOther.innerText.replace(/\s/g, ""));
           if (
-            stockRemainValue > 0 ||
+            stockRemainValue > 0 &&
             needCountValue + needToOtherValue + 50 <= stockRemainValue
           ) {
             console.log(`в ордере № ${index + 1} Бумаги хватает`);
@@ -1746,9 +1757,11 @@
                 index + 1
               }. Замените бумагу или свяжитесь с отвественным за остатки бумаги для запуска заказа в работу`
             ); // Показываем сообщение в центре экрана
+            needCountValue = Number(needCount.innerText.replace(/\s/g, ""));
+            stockRemainValue = Number(stockRemain.innerText.replace(/\s/g, ""));
           }
         } else {
-          if (stockRemainValue > 0 || needCountValue + 50 <= stockRemainValue) {
+          if (stockRemainValue > 0 && needCountValue + 50 <= stockRemainValue) {
             console.log(`в ордере № ${index + 1} Бумаги хватает`);
           } else {
             console.log(`в ордере № ${index + 1} Бумаги нет блэт`);
@@ -1792,7 +1805,7 @@
           stockRemainValue = Number(stockRemain.innerText.replace(/\s/g, ""));
           needToOtherValue = Number(needToOther.innerText.replace(/\s/g, ""));
           if (
-            stockRemainValue > 0 ||
+            stockRemainValue > 0 &&
             needCountValue + needToOtherValue + 50 <= stockRemainValue
           ) {
             console.log(`в ордере № ${index + 1} Бумаги хватает`);
@@ -1806,10 +1819,12 @@
             ); // Показываем сообщение в центре экрана
           }
         } else {
-          if (stockRemainValue > 0 || needCountValue + 50 <= stockRemainValue) {
+          if (stockRemainValue > 0 && needCountValue + 50 <= stockRemainValue) {
             console.log(`в ордере № ${index + 1} Бумаги хватает`);
           } else {
             console.log(`в ордере № ${index + 1} Бумаги нет блэт`);
+            needCountValue = Number(needCount.innerText.replace(/\s/g, ""));
+            stockRemainValue = Number(stockRemain.innerText.replace(/\s/g, ""));
             newFilesGet.style.display = "none";
             showCenterMessage(
               `Не хватает бумаги для ордера №${
@@ -1826,7 +1841,7 @@
     ) {
       calcCheck = 0;
     }
-  }, 500);
+  }, 2000);
 
   setInterval(() => {
     if (!document.body.innerText.includes("ОТГРУЗКА НА СЛЕДУЮЩИЙ ДЕНЬ!")) {
