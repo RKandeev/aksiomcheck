@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Проверка заказа 6.0.1
+// @name         Проверка заказа 6.0.2
 // @namespace    http://tampermonkey.net/
 // @version      1.6
 // @description
@@ -1627,6 +1627,35 @@
     const statusIconNoFiles = document.querySelector(
       '#Top > form > div > div > div > span:nth-child(2) > span.StatusIcon > img[src="img/status/status-nofiles.png"]'
     );
+
+    const statusNotToCheck1 = document.querySelector(
+      '#Top > form > div > div > div > span:nth-child(2) > span.StatusIcon > img[src="img/status/status-files.png"]'
+    );
+    const statusNotToCheck2 = document.querySelector(
+      '#Top > form > div > div > div > span:nth-child(2) > span.StatusIcon > img[src="img/status/status-prepress-check.png"]'
+    );
+    const statusNotToCheck3 = document.querySelector(
+      '#Top > form > div > div > div > span:nth-child(2) > span.StatusIcon > img[src="img/status/status-prepress-layout.png"]'
+    );
+    const statusNotToCheck4 = document.querySelector(
+      '#Top > form > div > div > div > span:nth-child(2) > span.StatusIcon > img[src="img/status/status-print.png"]'
+    );
+    const statusNotToCheck5 = document.querySelector(
+      '#Top > form > div > div > div > span:nth-child(2) > span.StatusIcon > img[src="img/status/status-postpress-ready.png"]'
+    );
+    const statusNotToCheck6 = document.querySelector(
+      '#Top > form > div > div > div > span:nth-child(2) > span.StatusIcon > img[src="img/status/status-pack.png"]'
+    );
+    const statusNotToCheck7 = document.querySelector(
+      '#Top > form > div > div > div > span:nth-child(2) > span.StatusIcon > img[src="img/status/status-pack-onmove.png"]'
+    );
+    const statusNotToCheck8 = document.querySelector(
+      '#Top > form > div > div > div > span:nth-child(2) > span.StatusIcon > img[src="img/status/status-pack-tomove.png"]'
+    );
+    const statusNotToCheck9 = document.querySelector(
+      '#Top > form > div > div > div > span:nth-child(2) > span.StatusIcon > img[src="img/status/status-close.png"]'
+    );
+
     const btnsgroup1 = document.querySelector(
       "#Summary > table > tbody > tr > td:nth-child(1) > div.right > div > button:nth-child(1)"
     );
@@ -1640,6 +1669,7 @@
       "#Summary > table > tbody > tr > td:nth-child(2) > table > tbody > tr.TimeFilesInfo > td.right > button"
     );
     const fullWindow = document.querySelector("#Doc");
+    let anotherStatus = 0;
     setInterval(() => {
       if (
         statusIconCalc !== null ||
@@ -1650,11 +1680,14 @@
           calcCheck = 0;
         }
       }
-      if (document.body.innerText.includes('Сохранить расчет') === true && spinner !== null) {
+      if (
+        document.body.innerText.includes("Сохранить расчет") === true &&
+        spinner !== null
+      ) {
         calcCheck = 0;
       }
     }, 100);
-    if (statusIconCalc !== null && calcCheck === 0) {
+    if (statusIconCalc !== null && calcCheck === 0 && statusNotToCheck1 === null&& statusNotToCheck2 === null&& statusNotToCheck3 === null&& statusNotToCheck4 === null&& statusNotToCheck5 === null&& statusNotToCheck6 === null&& statusNotToCheck7 === null&& statusNotToCheck8 === null&& statusNotToCheck9 === null) {
       calcCheck = 1;
       let orders = document.querySelectorAll(
         "#Summary > table > tbody > tr > td:nth-child(1) > .formblock"
@@ -1714,7 +1747,7 @@
           }
         }
       });
-    } else if (statusIconCalcWFiles !== null && calcCheck === 0) {
+    } else if (statusIconCalcWFiles !== null && calcCheck === 0 && statusNotToCheck1 === null&& statusNotToCheck2 === null&& statusNotToCheck3 === null&& statusNotToCheck4 === null&& statusNotToCheck5 === null&& statusNotToCheck6 === null&& statusNotToCheck7 === null&& statusNotToCheck8 === null&& statusNotToCheck9 === null) {
       calcCheck = 1;
       let orders = document.querySelectorAll(
         "#Summary > table > tbody > tr > td:nth-child(1) > .formblock"
@@ -1780,7 +1813,7 @@
           }
         }
       });
-    } else if (statusIconNoFiles !== 0 && calcCheck === 0) {
+    } else if (statusIconNoFiles !== 0 && calcCheck === 0 && statusNotToCheck1 === null&& statusNotToCheck2 === null&& statusNotToCheck3 === null&& statusNotToCheck4 === null&& statusNotToCheck5 === null&& statusNotToCheck6 === null&& statusNotToCheck7 === null&& statusNotToCheck8 === null&& statusNotToCheck9 === null) {
       calcCheck = 1;
       let orders = document.querySelectorAll(
         "#Summary > table > tbody > tr > td:nth-child(1) > .formblock"
