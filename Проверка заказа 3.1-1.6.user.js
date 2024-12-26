@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Проверка заказа 6.0
+// @name         Проверка заказа 6.0.1
 // @namespace    http://tampermonkey.net/
 // @version      1.6
 // @description
@@ -1325,7 +1325,7 @@
       //   return { formattedDate1, formattedDate2 };
       // }
 
-      DateReady.innerText = addOneDay(DateReady1).formattedDate1;
+      // DateReady.innerText = addOneDay(DateReady1).formattedDate1;
 
       // Пример использования
 
@@ -1635,6 +1635,15 @@
     const newFilesGet = document.querySelector(
       "#Summary > table > tbody > tr > td:nth-child(2) > table > tbody > tr.TimeFilesInfo > td.right > button"
     );
+    const fullWindow = document.querySelector("#Doc");
+    setInterval(() => {
+      if (statusIconCalc !== null || statusIconCalcWFiles!== null || statusIconNoFiles !== null ) {
+        if (fullWindow.classList.contains("LoadingContent") === true){
+          calcCheck = 0;
+
+        }
+      }
+    }, 500);
 
     if (statusIconCalc !== null && calcCheck === 0) {
       calcCheck = 1;
@@ -1660,7 +1669,12 @@
           needCountValue = Number(needCount.innerText.replace(/\s/g, ""));
           stockRemainValue = Number(stockRemain.innerText.replace(/\s/g, ""));
           needToOtherValue = Number(needToOther.innerText.replace(/\s/g, ""));
-          if (needCountValue + needToOtherValue + 50 <= stockRemainValue) {
+          console.log(stockRemainValue);
+
+          if (
+            stockRemainValue > 0 ||
+            needCountValue + needToOtherValue + 50 <= stockRemainValue
+          ) {
             console.log(`в ордере № ${index + 1} Бумаги хватает`);
           } else {
             console.log(`в ордере № ${index + 1} Бумаги нет блэт`);
@@ -1674,7 +1688,7 @@
             ); // Показываем сообщение в центре экрана
           }
         } else {
-          if (needCountValue + 50 <= stockRemainValue) {
+          if (stockRemainValue > 0 || needCountValue + 50 <= stockRemainValue) {
             console.log(`в ордере № ${index + 1} Бумаги хватает`);
           } else {
             console.log(`в ордере № ${index + 1} Бумаги нет блэт`);
@@ -1713,7 +1727,10 @@
           needCountValue = Number(needCount.innerText.replace(/\s/g, ""));
           stockRemainValue = Number(stockRemain.innerText.replace(/\s/g, ""));
           needToOtherValue = Number(needToOther.innerText.replace(/\s/g, ""));
-          if (needCountValue + needToOtherValue + 50 <= stockRemainValue) {
+          if (
+            stockRemainValue > 0 ||
+            needCountValue + needToOtherValue + 50 <= stockRemainValue
+          ) {
             console.log(`в ордере № ${index + 1} Бумаги хватает`);
           } else {
             console.log(`в ордере № ${index + 1} Бумаги нет блэт`);
@@ -1731,7 +1748,7 @@
             ); // Показываем сообщение в центре экрана
           }
         } else {
-          if (needCountValue + 50 <= stockRemainValue) {
+          if (stockRemainValue > 0 || needCountValue + 50 <= stockRemainValue) {
             console.log(`в ордере № ${index + 1} Бумаги хватает`);
           } else {
             console.log(`в ордере № ${index + 1} Бумаги нет блэт`);
@@ -1774,7 +1791,10 @@
           needCountValue = Number(needCount.innerText.replace(/\s/g, ""));
           stockRemainValue = Number(stockRemain.innerText.replace(/\s/g, ""));
           needToOtherValue = Number(needToOther.innerText.replace(/\s/g, ""));
-          if (needCountValue + needToOtherValue + 50 <= stockRemainValue) {
+          if (
+            stockRemainValue > 0 ||
+            needCountValue + needToOtherValue + 50 <= stockRemainValue
+          ) {
             console.log(`в ордере № ${index + 1} Бумаги хватает`);
           } else {
             console.log(`в ордере № ${index + 1} Бумаги нет блэт`);
@@ -1786,7 +1806,7 @@
             ); // Показываем сообщение в центре экрана
           }
         } else {
-          if (needCountValue + 50 <= stockRemainValue) {
+          if (stockRemainValue > 0 || needCountValue + 50 <= stockRemainValue) {
             console.log(`в ордере № ${index + 1} Бумаги хватает`);
           } else {
             console.log(`в ордере № ${index + 1} Бумаги нет блэт`);
