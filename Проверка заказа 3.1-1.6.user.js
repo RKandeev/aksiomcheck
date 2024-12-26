@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Проверка заказа 5.4.2
+// @name         Проверка заказа 6.0
 // @namespace    http://tampermonkey.net/
 // @version      1.6
 // @description
@@ -1612,7 +1612,7 @@
       checkingClientsBtn.style.display = "none";
     }
   }
-
+  let calcCheck = 0;
   setInterval(() => {
     const statusIconCalc = document.querySelector(
       '#Top > form > div > div > div > span:nth-child(2) > span.StatusIcon > img[src="img/status/status-calc.png"]'
@@ -1629,7 +1629,15 @@
     const btnsgroup2 = document.querySelector(
       "#Summary > table > tbody > tr > td:nth-child(1) > div.right > div > button:nth-child(2)"
     );
-    if (statusIconCalc) {
+    const btnToWorkWFiles = document.querySelector(
+      "#Summary > table > tbody > tr > td:nth-child(2) > table > tbody > tr.TimeFilesInfo > td.right > button"
+    );
+    const newFilesGet = document.querySelector(
+      "#Summary > table > tbody > tr > td:nth-child(2) > table > tbody > tr.TimeFilesInfo > td.right > button"
+    );
+
+    if (statusIconCalc !== null && calcCheck === 0) {
+      calcCheck = 1;
       let orders = document.querySelectorAll(
         "#Summary > table > tbody > tr > td:nth-child(1) > .formblock"
       );
@@ -1656,20 +1664,149 @@
             console.log(`в ордере № ${index + 1} Бумаги хватает`);
           } else {
             console.log(`в ордере № ${index + 1} Бумаги нет блэт`);
-            btnsgroup2.style.display = "none";
+            if (btnsgroup2 !== null) {
+              btnsgroup2.style.display = "none";
+            }
+            showCenterMessage(
+              `Не хватает бумаги для ордера №${
+                index + 1
+              }. Замените бумагу или свяжитесь с отвественным за остатки бумаги для запуска заказа в работу`
+            ); // Показываем сообщение в центре экрана
           }
         } else {
           if (needCountValue + 50 <= stockRemainValue) {
             console.log(`в ордере № ${index + 1} Бумаги хватает`);
           } else {
             console.log(`в ордере № ${index + 1} Бумаги нет блэт`);
-            btnsgroup2.style.display = "none";
-
+            if (btnsgroup2 !== null) {
+              btnsgroup2.style.display = "none";
+            }
+            showCenterMessage(
+              `Не хватает бумаги для ордера №${
+                index + 1
+              }. Замените бумагу или свяжитесь с отвественным за остатки бумаги для запуска заказа в работу`
+            ); // Показываем сообщение в центре экрана
           }
         }
       });
+    } else if (statusIconCalcWFiles !== null && calcCheck === 0) {
+      calcCheck = 1;
+      let orders = document.querySelectorAll(
+        "#Summary > table > tbody > tr > td:nth-child(1) > .formblock"
+      );
+
+      orders.forEach((el, index) => {
+        let needCount = el.querySelector(
+          "table.inner > tbody > tr > td > table > tbody > tr > td.SkladBlock > table > tbody > tr:nth-child(1) > td.right.nobreak"
+        );
+        let stockRemain = el.querySelector(
+          "table.inner > tbody > tr > td > table > tbody > tr > td.SkladBlock > table > tbody > tr:nth-child(3) > td.right.nobreak"
+        );
+        let needToOther = el.querySelector(
+          "table.inner > tbody > tr > td > table > tbody > tr > td.SkladBlock > table > tbody > tr:nth-child(4) > td.right.nobreak"
+        );
+        let needCountValue = 0;
+        let stockRemainValue = 0;
+        let needToOtherValue = 0;
+
+        if (needToOther) {
+          needCountValue = Number(needCount.innerText.replace(/\s/g, ""));
+          stockRemainValue = Number(stockRemain.innerText.replace(/\s/g, ""));
+          needToOtherValue = Number(needToOther.innerText.replace(/\s/g, ""));
+          if (needCountValue + needToOtherValue + 50 <= stockRemainValue) {
+            console.log(`в ордере № ${index + 1} Бумаги хватает`);
+          } else {
+            console.log(`в ордере № ${index + 1} Бумаги нет блэт`);
+            btnToWorkWFiles.style.display = "none";
+            if (btnsgroup1 !== null) {
+              btnsgroup1.style.display = "none";
+            }
+            if (btnsgroup2 !== null) {
+              btnsgroup2.style.display = "none";
+            }
+            showCenterMessage(
+              `Не хватает бумаги для ордера №${
+                index + 1
+              }. Замените бумагу или свяжитесь с отвественным за остатки бумаги для запуска заказа в работу`
+            ); // Показываем сообщение в центре экрана
+          }
+        } else {
+          if (needCountValue + 50 <= stockRemainValue) {
+            console.log(`в ордере № ${index + 1} Бумаги хватает`);
+          } else {
+            console.log(`в ордере № ${index + 1} Бумаги нет блэт`);
+            btnToWorkWFiles.style.display = "none";
+            if (btnsgroup1 !== null) {
+              btnsgroup1.style.display = "none";
+            }
+            if (btnsgroup2 !== null) {
+              btnsgroup2.style.display = "none";
+            }
+            showCenterMessage(
+              `Не хватает бумаги для ордера №${
+                index + 1
+              }. Замените бумагу или свяжитесь с отвественным за остатки бумаги для запуска заказа в работу`
+            ); // Показываем сообщение в центре экрана
+          }
+        }
+      });
+    } else if (statusIconNoFiles !== 0 && calcCheck === 0) {
+      calcCheck = 1;
+      let orders = document.querySelectorAll(
+        "#Summary > table > tbody > tr > td:nth-child(1) > .formblock"
+      );
+
+      orders.forEach((el, index) => {
+        let needCount = el.querySelector(
+          "table.inner > tbody > tr > td > table > tbody > tr > td.SkladBlock > table > tbody > tr:nth-child(1) > td.right.nobreak"
+        );
+        let stockRemain = el.querySelector(
+          "table.inner > tbody > tr > td > table > tbody > tr > td.SkladBlock > table > tbody > tr:nth-child(3) > td.right.nobreak"
+        );
+        let needToOther = el.querySelector(
+          "table.inner > tbody > tr > td > table > tbody > tr > td.SkladBlock > table > tbody > tr:nth-child(4) > td.right.nobreak"
+        );
+        let needCountValue = 0;
+        let stockRemainValue = 0;
+        let needToOtherValue = 0;
+
+        if (needToOther) {
+          needCountValue = Number(needCount.innerText.replace(/\s/g, ""));
+          stockRemainValue = Number(stockRemain.innerText.replace(/\s/g, ""));
+          needToOtherValue = Number(needToOther.innerText.replace(/\s/g, ""));
+          if (needCountValue + needToOtherValue + 50 <= stockRemainValue) {
+            console.log(`в ордере № ${index + 1} Бумаги хватает`);
+          } else {
+            console.log(`в ордере № ${index + 1} Бумаги нет блэт`);
+            newFilesGet.style.display = "none";
+            showCenterMessage(
+              `Не хватает бумаги для ордера №${
+                index + 1
+              }. Замените бумагу или свяжитесь с отвественным за остатки бумаги для запуска заказа в работу`
+            ); // Показываем сообщение в центре экрана
+          }
+        } else {
+          if (needCountValue + 50 <= stockRemainValue) {
+            console.log(`в ордере № ${index + 1} Бумаги хватает`);
+          } else {
+            console.log(`в ордере № ${index + 1} Бумаги нет блэт`);
+            newFilesGet.style.display = "none";
+            showCenterMessage(
+              `Не хватает бумаги для ордера №${
+                index + 1
+              }. Замените бумагу или свяжитесь с отвественным за остатки бумаги для запуска заказа в работу`
+            ); // Показываем сообщение в центре экрана
+          }
+        }
+      });
+    } else if (
+      statusIconCalc === null &&
+      statusIconCalcWFiles === null &&
+      statusIconNoFiles === null
+    ) {
+      calcCheck = 0;
     }
-  }, 5000);
+  }, 500);
 
   setInterval(() => {
     if (!document.body.innerText.includes("ОТГРУЗКА НА СЛЕДУЮЩИЙ ДЕНЬ!")) {
